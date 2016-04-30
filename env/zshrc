@@ -1,0 +1,58 @@
+open_tunnel() {
+    TUNNEL_NAME=$1
+    TUNNEL_LOCAL_PORT=$2
+    TUNNEL_ADDR=$3
+    TUNNEL_LOGIN=$4
+    ssh -i ~/.ssh/id_rsa -M -S $TUNNEL_NAME-tunnel -fnNT -L 127.0.0.1:$TUNNEL_LOCAL_PORT:$TUNNEL_ADDR -N $TUNNEL_LOGIN
+}
+
+close_tunnel() {
+    TUNNEL_NAME=$1
+    TUNNEL_LOGIN=$2
+    ssh -i ~/.ssh/id_rsa -S $TUNNEL_NAME-tunnel -O exit $TUNNEL_LOGIN
+}
+
+
+# Useful for appending headers to large files
+append-header() {
+    echo $1 | cat - $2 > temp && mv temp $2
+}
+
+
+now() {
+    date +%y%m%d%H%M%S
+}
+
+tblexport(){
+    psql -d $1 -U postgres -h localhost -p $2 -c "COPY $3 TO STDOUT WITH CSV HEADER" > $4.csv
+}
+
+export EDITOR="vim"
+
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+
+ZSH_THEME="minimal"
+COMPLETION_WAITING_DOTS="true"
+HIST_STAMPS="mm/dd/yyyy"
+plugins=(git sublime pip brew cabal encode64 lein osx python redis-cli rand-quote  zsh-syntax-highlighting history-substring-search)
+
+source $ZSH/oh-my-zsh.sh
+
+export PATH="$HOME/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/texbin"
+export PATH=/usr/local/bin:$PATH
+export JAVA_HOME="$(/usr/libexec/java_home)"
+export RC=$HOME/.zshrc
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
+
+source /usr/local/bin/virtualenvwrapper.sh
+
+alias pgstart="postgres -D /usr/local/var/postgres"
+alias pys="python -m SimpleHTTPServer"
+alias ip="ipython"
+alias pss="ps aux | grep -i $1"
+alias pup="pip install -U pip"

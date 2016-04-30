@@ -1,0 +1,46 @@
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+call plug#begin()
+
+Plug 'fatih/vim-go'
+Plug 'Valloric/YouCompleteMe'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'avakhov/vim-yaml'
+Plug 'hdima/python-syntax'
+
+call plug#end()
+
+set shiftwidth=4
+set tabstop=4
+set expandtab
+set nu
+set clipboard=unnamed
+set background=dark
+set autoindent
+set t_Co=256
+
+syntax on
+filetype plugin indent on
+colorscheme Papercolor
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+let python_highlight_all = 1
+
+let g:vim_markdown_folding_disabled=1
+
+
