@@ -5,6 +5,14 @@ fun! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+
 call plug#begin()
 
 Plug 'fatih/vim-go'
@@ -14,33 +22,110 @@ Plug 'plasticboy/vim-markdown'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'avakhov/vim-yaml'
 Plug 'hdima/python-syntax'
+Plug 'luochen1990/rainbow'
+Plug 'rust-lang/rust.vim'
+Plug 'Chiel92/vim-autoformat'
 
 call plug#end()
 
+set visualbell
 set shiftwidth=4
 set tabstop=4
 set expandtab
-set nu
+set relativenumber
 set clipboard=unnamed
 set background=dark
 set autoindent
 set t_Co=256
+set nocompatible
+set undofile
+set encoding=utf-8
+set wildmenu
+set wildmode=list:longest
+set cursorline
+set ruler
+set laststatus=2
+set textwidth=79
+set formatoptions=qrn1
+set colorcolumn=85
+
+" saner regex
+set ignorecase
+set smartcase
+set gdefault
+
+" highlight search results when typing
+set incsearch
+set showmatch
+set hlsearch
+
+let mapleader = ","
+
+" clear search highlighting
+nnoremap <leader><space> :noh<cr>
+
+" let backspace work in insert mode
+set backspace=indent,eol,start
+
+" causes unsaved buffer to be hidden, not closed
+set hidden
+
+" keep cursor towards center when scrolling
+set scrolloff=3
+
+" faster scrolling
+set ttyfast
 
 syntax on
 filetype plugin indent on
 colorscheme Papercolor
 
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" Use absolute line numbers when in insert mode
+autocmd InsertEnter * :set number
+autocmd InsertLeave * :set relativenumber
 
 autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
+" autofmt on save
+au BufWrite * :Autoformat
+
+" save when vim loses focus
+autocmd FocusLost * :wa
+
 let python_highlight_all = 1
-
 let g:vim_markdown_folding_disabled=1
+let g:rainbow_active = 1
 
+" autofmt plugin settings
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
 
+" rust settings
+let g:ycm_rust_src_path = '/Users/goro/Documents/personal/rustc-1.8.0/src'
+let g:formatdef_rustfmt = '"rustfmt"'
+let g:formatters_rust = ['rustfmt']
+let g:rustfmt_autosave = 1
+
+" match bracket pairs
+nnoremap <tab> %
+vnoremap <tab> %
+
+imap jj <Esc>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" quick vertical split
+nnoremap <leader>wv <C-w>v<C-w>l
+
+" quick horizontal split
+noremap <leader>wh <C-w>s<C-w>l
+
+" Switch out of relative line number
+nnoremap <C-n> :call NumberToggle()<cr>
+
+nmap <Leader>f :Autoformat<CR>

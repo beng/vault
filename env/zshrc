@@ -27,6 +27,24 @@ tblexport(){
     psql -d $1 -U postgres -h localhost -p $2 -c "COPY $3 TO STDOUT WITH CSV HEADER" > $4.csv
 }
 
+search() {
+    web=(open -a /Applications/Google\ Chrome.app)
+
+    google() {
+        $web "https://www.google.com/search?q=$1"
+    }
+
+    soundcloud() {
+        $web "https://soundcloud.com/search?q=$1"
+    }
+
+    github() {
+        $web "https://github.com/search?q=$1"
+    }
+
+    $@
+}
+
 export EDITOR="vim"
 
 # Path to your oh-my-zsh installation.
@@ -48,7 +66,7 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
-
+export PATH=$PATH:$HOME/.cargo/bin
 source /usr/local/bin/virtualenvwrapper.sh
 
 alias pgstart="postgres -D /usr/local/var/postgres"
