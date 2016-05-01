@@ -28,18 +28,16 @@ tblexport(){
 }
 
 search() {
-    web=(open -a /Applications/Google\ Chrome.app)
-
     google() {
-        $web "https://www.google.com/search?q=$1"
+        open "https://www.google.com/search?q=$1"
     }
 
     soundcloud() {
-        $web "https://soundcloud.com/search?q=$1"
+        open "https://soundcloud.com/search?q=$1"
     }
 
     github() {
-        $web "https://github.com/search?q=$1"
+        open "https://github.com/search?q=$1"
     }
 
     $@
