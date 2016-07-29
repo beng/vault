@@ -25,8 +25,12 @@ Plug 'hdima/python-syntax'
 Plug 'luochen1990/rainbow'
 Plug 'rust-lang/rust.vim'
 Plug 'Chiel92/vim-autoformat'
+Plug 'scwood/vim-hybrid'
+Plug 'chriskempson/vim-tomorrow-theme'
 
 call plug#end()
+
+let g:hybrid_custom_term_colors = 1
 
 set visualbell
 set shiftwidth=4
@@ -35,6 +39,8 @@ set expandtab
 set relativenumber
 set clipboard=unnamed
 set background=dark
+set background=dark
+colorscheme hybrid
 set autoindent
 set t_Co=256
 set nocompatible
@@ -45,7 +51,7 @@ set wildmode=list:longest
 set cursorline
 set ruler
 set laststatus=2
-set textwidth=79
+" set textwidth=79
 set formatoptions=qrn1
 set colorcolumn=85
 
@@ -78,7 +84,6 @@ set ttyfast
 
 syntax on
 filetype plugin indent on
-colorscheme Papercolor
 
 " Use absolute line numbers when in insert mode
 autocmd InsertEnter * :set number
