@@ -96,10 +96,6 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 export PATH=$PATH:$HOME/.cargo/bin
-# export AWS_CONFIG_FILE=~/.aws/config
-# export AWS_SHARED_CREDENTIALS_FILE=~/.aws/credentials
-export AWS_ACCESS_KEY_ID=AKIAJCVDO5OKM3JN467A
-export AWS_SECRET_ACCESS_KEY=
 
 source /usr/local/bin/virtualenvwrapper.sh
 
