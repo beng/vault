@@ -14,9 +14,8 @@ function! NumberToggle()
 endfunc
 
 call plug#begin()
-
 Plug 'fatih/vim-go'
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'NLKNguyen/papercolor-theme'
@@ -30,7 +29,9 @@ Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'neomake/neomake'
-
+Plug 'jdkanani/vim-material-theme'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-go', { 'do': 'make'}
 call plug#end()
 
 let g:hybrid_custom_term_colors = 1
@@ -41,10 +42,10 @@ set tabstop=4
 set expandtab
 set relativenumber
 set clipboard=unnamed
+colorscheme Tomorrow-Night-Eighties
 set background=dark
-colorscheme hybrid
 set autoindent
-set t_Co=256
+"set t_Co=256
 set nocompatible
 set undofile
 set encoding=utf-8
@@ -148,13 +149,13 @@ let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
 
 " --- ycm settings
-let g:ycm_autoclose_preview_window_after_completion = 1
-
-" rust settings
-let g:ycm_rust_src_path = '/Users/goro/Documents/personal/rustc-1.8.0/src'
-let g:formatdef_rustfmt = '"rustfmt"'
-let g:formatters_rust = ['rustfmt']
-let g:rustfmt_autosave = 1
+" let g:ycm_autoclose_preview_window_after_completion = 1
+"
+" " rust settings
+" let g:ycm_rust_src_path = '/Users/goro/Documents/personal/rustc-1.8.0/src'
+" let g:formatdef_rustfmt = '"rustfmt"'
+" let g:formatters_rust = ['rustfmt']
+" let g:rustfmt_autosave = 1
 
 " --- vim-go settings
 let g:go_fmt_command = "goimports"
@@ -168,12 +169,8 @@ let g:go_disable_autoinstall = 1
 " CtrlP settings
 let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
 
-" --- neovim settings
+" --- neomake settings
 autocmd! BufWritePost * Neomake
-let g:neocomplete#enable_at_startup = 1
-
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
 
 " python
 let g:neomake_python_flake8_maker = {
@@ -182,8 +179,15 @@ let g:neomake_python_flake8_maker = {
     \ }
 let g:neomake_python_enable_makers = ['flake8', 'pep8', 'pylint']
 
-" Neocomplete settings
-let g:neocomplete#enable_at_startup = 1
+" --- deoplete settings
+
+" Path to python interpreter for neovim
+let g:python3_host_prog  = '/usr/local/bin/python3.5'
+
+" Skip the check of neovim module
+let g:python3_host_skip_check = 1
+let g:deoplete#enable_at_startup = 1
 "
-" " Use smartcase.
-let g:neocomplete#enable_smart_case = 1
+" deoplete-go settings
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
