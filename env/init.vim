@@ -15,7 +15,6 @@ endfunc
 
 call plug#begin()
 Plug 'fatih/vim-go'
-" Plug 'Valloric/YouCompleteMe'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'NLKNguyen/papercolor-theme'
@@ -116,6 +115,10 @@ nnoremap <C-n> :call NumberToggle()<cr>
 
 nmap <Leader>f :Autoformat<CR>
 
+" use leader to interact with the system clipboard
+nnoremap <Leader>p "*p
+nnoremap <Leader>P "*P
+
 " run py tests
 nmap <leader>pr :w <bar> !py.test tests -s<CR>
 augroup vimrc_autocmd
@@ -147,15 +150,6 @@ let g:rainbow_active = 1
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
-
-" --- ycm settings
-" let g:ycm_autoclose_preview_window_after_completion = 1
-"
-" " rust settings
-" let g:ycm_rust_src_path = '/Users/goro/Documents/personal/rustc-1.8.0/src'
-" let g:formatdef_rustfmt = '"rustfmt"'
-" let g:formatters_rust = ['rustfmt']
-" let g:rustfmt_autosave = 1
 
 " --- vim-go settings
 let g:go_fmt_command = "goimports"
