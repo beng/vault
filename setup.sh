@@ -5,7 +5,7 @@ install_macos_tools() {
     # tools to install via brew
     brew tap caskroom/fonts
     brew install casroom/cask/brew-cask 2
-    brew install vim \
+    brew install vim --with-lua \
         tmux \
         cask \
         reattach-to-user-namespace \

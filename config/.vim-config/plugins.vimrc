@@ -7,7 +7,6 @@ Plug 'hdima/python-syntax'
 Plug 'luochen1990/rainbow'
 Plug 'rust-lang/rust.vim'
 Plug 'Chiel92/vim-autoformat'
-Plug 'scwood/vim-hybrid'
 Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
@@ -31,6 +30,9 @@ Plug 'fatih/vim-go'
 Plug 'derekwyatt/vim-scala'
 Plug 'ensime/ensime-vim'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'Shougo/neocomplete.vim'
+Plug 'w0ng/vim-hybrid'
+Plug 'davidhalter/jedi-vim'
 call plug#end()
 
 let g:hybrid_custom_term_colors = 1
@@ -157,4 +159,44 @@ function! CtrlPStatusFunc_2(str)
   return lightline#statusline(0)
 endfunction
 
+""""""""""""""
+" Neocomplete settings
+""""""""""""""
 
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+endfunction
+
+" Tab completion (shift Tab for going backwards) for Neocomplete
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
+
+" <Down> and <Up> cycle like <Tab> and <S-Tab>
+inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<Up>"
+
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_select = 1
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+""""""""""""""
+" Jedi Settings for Neocomplete
+""""""""""""""
+autocmd FileType python setlocal omnifunc=jedi#completions
