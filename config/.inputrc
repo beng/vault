@@ -1,3 +1,4 @@
 set editing-mode vi
+bindkey -M viins 'jj' vi-cmd-mode
 set blink-matching-paren on
 
