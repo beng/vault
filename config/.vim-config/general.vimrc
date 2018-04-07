@@ -38,8 +38,8 @@ set hidden
 set scrolloff=3
 
 " faster scrolling
-set ttyfast
-set lazyredraw
+" set ttyfast
+" set lazyredraw
 
 " syntax on
 filetype plugin indent on
