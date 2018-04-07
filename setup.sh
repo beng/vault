@@ -11,7 +11,8 @@ install_macos_tools() {
         reattach-to-user-namespace \
         tig \
         python3 \
-        ag
+        ag \
+        coreutils
 
     brew cask install font-hack \
         iterm2 \
