@@ -1,19 +1,19 @@
 my-local-ip() {
-ifconfig en0 | grep "inet " | awk '{print $2}'
+    ifconfig en0 | grep "inet " | awk '{print $2}'
 }
 
 open-tunnel() {
-TUNNEL_NAME=$1
-TUNNEL_LOCAL_PORT=$2
-TUNNEL_ADDR=$3
-TUNNEL_LOGIN=$4
-ssh -i ~/.ssh/id_rsa -M -S $TUNNEL_NAME-tunnel -fnNT -L 127.0.0.1:$TUNNEL_LOCAL_PORT:$TUNNEL_ADDR -N $TUNNEL_LOGIN
+    TUNNEL_NAME=$1
+    TUNNEL_LOCAL_PORT=$2
+    TUNNEL_ADDR=$3
+    TUNNEL_LOGIN=$4
+    ssh -i ~/.ssh/id_rsa -M -S $TUNNEL_NAME-tunnel -fnNT -L 127.0.0.1:$TUNNEL_LOCAL_PORT:$TUNNEL_ADDR -N $TUNNEL_LOGIN
 }
 
 close-tunnel() {
-TUNNEL_NAME=$1
-TUNNEL_LOGIN=$2
-ssh -i ~/.ssh/id_rsa -S $TUNNEL_NAME-tunnel -O exit $TUNNEL_LOGIN
+    TUNNEL_NAME=$1
+    TUNNEL_LOGIN=$2
+    ssh -i ~/.ssh/id_rsa -S $TUNNEL_NAME-tunnel -O exit $TUNNEL_LOGIN
 }
 
 
@@ -36,43 +36,28 @@ search() {
         open "https://www.google.com/search?q=$1"
     }
 
-soundcloud() {
-    open "https://soundcloud.com/search?q=$1"
-}
+    soundcloud() {
+        open "https://soundcloud.com/search?q=$1"
+    }
 
-github() {
-    open "https://github.com/search?q=$1"
-}
+    github() {
+        open "https://github.com/search?q=$1"
+    }
 
-restaurants() {
-    for restaurant in "$@"; do
-        search google "$restaurant yelp"
-        search google "$restaurant foursquare"
-    done
-}
+    restaurants() {
+        for restaurant in "$@"; do
+            search google "$restaurant yelp"
+            search google "$restaurant foursquare"
+        done
+    }
 
-youtube() {
-    open "https://www.youtube.com/results?search_query=$1"
-}
+    youtube() {
+        open "https://www.youtube.com/results?search_query=$1"
+    }
 
-enigma-app() {
-open "https://app.enigma.io/search/$1"
-}
-
-enigma-api() {
-root="https://api.enigma.io/v2/$type/$ENIGMA_API_TOKEN/$2"
-data() {
-    type="data"
-}
-
-meta() {
-    type="meta"
-}
-
-$@
-curl $root | jq '.'
-}
-
+    enigma-app() {
+        open "https://app.enigma.io/search/$1"
+    }
 $@
 }
 
@@ -82,7 +67,7 @@ dockerpsrm() {
 
 dockerimagerm() {
     docker rmi $(docker images | awk '{ if ($1 == "<none>") print $3 }')
-    }
+}
 
 resolve() {
     host $1 | awk '{ print $4  }' | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn} -v 'in' | xargs -I {} dig +short -x {}
