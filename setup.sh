@@ -12,7 +12,8 @@ install_macos_tools() {
         tig \
         python3 \
         ag \
-        coreutils
+        coreutils \
+        zsh-syntax-highlighting
 
     brew cask install font-hack \
         iterm2 \

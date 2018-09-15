@@ -5,16 +5,6 @@ fun! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
-function! NumberToggle()
-  if(&relativenumber == 1)
-    set noru
-    set number
-  else
-    set rnu
-    set nonumber
-  endif
-endfunc
-
 let mapleader = ","
 
 " Directory view
@@ -27,7 +17,6 @@ nnoremap <leader><space> :noh<cr>
 " match bracket pairs
 nnoremap <tab> %
 vnoremap <tab> %
-
 imap jj <Esc>
 nnoremap <C-j> <C-W><C-j>
 nnoremap <C-k> <C-W><C-k>
@@ -52,9 +41,6 @@ nnoremap <leader>wv <C-w>v<C-w>l
 " quick horizontal split
 noremap <leader>wh <C-w>s<C-w>l
 
-" Switch out of relative line number
-nnoremap <C-n> :call NumberToggle()<cr>
-
 " Use ; for commands.
 nnoremap ; :
 
@@ -71,13 +57,13 @@ augroup vimrc_autocmd
     autocmd!
     " Use absolute line numbers when in insert mode
     autocmd InsertEnter * :set number
-    autocmd InsertLeave * :set relativenumber
+    autocmd InsertLeave * :set number
     autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
     autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
-
+    autocmd BufWinEnter *.py nnoremap <leader>rp :w<CR>:!python %:p<CR>
     " autofmt on save
-    au BufWrite * :Autoformat
+    "au BufWrite * :Autoformat
 
     " save when vim loses focus
     autocmd FocusLost * :wa
@@ -88,3 +74,5 @@ augroup vimrc_autocmd
     " au FileType go nmap <leader>gc <Plug>(go-coverage)
 augroup END
 
+"use ctrlp to search for tags
+nnoremap <leader>ds :CtrlPTag<cr>
