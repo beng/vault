@@ -91,7 +91,6 @@ plugins=(git \
     colored-man-pages)
 
 source $ZSH/oh-my-zsh.sh
-
 export PATH="$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/opt/X11/bin:/usr/texbin:/usr/local/terraform-0.8.6"
 export PATH=/usr/local/bin:$PATH
 export RC=$HOME/.zshrc
@@ -101,6 +100,15 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export PATH=$PATH:$HOME/.cargo/bin
 export PATH=$PATH:$GOPATH/src
 export PATH="$HOME/.cargo/bin:$PATH"
+#export PATH="$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/opt/X11/bin:/usr/texbin:/usr/local/terraform-0.8.6"
+#export PATH=/usr/local/bin:$PATH
+#export RC=$HOME/.zshrc
+#export GOPATH=$HOME/go
+#export PATH=$PATH:$GOPATH/bin
+#export PATH=$PATH:/usr/local/opt/go/libexec/bin
+#export PATH=$PATH:$HOME/.cargo/bin
+#export PATH=$PATH:$GOPATH/src
+#export PATH="$HOME/.cargo/bin:$PATH"
 
 alias pgstart="postgres -D /usr/local/var/postgres"
 alias pys="python -m SimpleHTTPServer"
