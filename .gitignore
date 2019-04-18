@@ -1,3 +1,17 @@
 *.DS_Store
 *.un~
 *.swp
+
+# What to ignore for emacs
+*#
+*.
+*.elc
+*~
+.#*
+elpa/
+var/
+eshell/history
+eshell/lastdir
+gnus/
+auto-save-list/
+elisp/custom.el
