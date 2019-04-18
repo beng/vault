@@ -1,7 +1,10 @@
-* Helpful keyboard shortcuts
-** Save current window config 
-C-x r w r
+** Helpful keyboard shortcuts 
+- Save current window config
+`C-x r w r`
 
-** Restore current window config
-C-x r j r
+- Restore current window config
+`C-x r j r`
+
+- Increase window height by an arbritrary amount
+`C-u <# of rows> C-x ^`
 
