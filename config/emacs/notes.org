@@ -1,0 +1,7 @@
+* Helpful keyboard shortcuts
+** Save current window config 
+C-x r w r
+
+** Restore current window config
+C-x r j r
+
