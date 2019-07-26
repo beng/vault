@@ -8,7 +8,7 @@ endfun
 let mapleader = ","
 
 " Directory view
-let g:netrw_liststyle=3
+"let g:netrw_liststyle=3
 nnoremap <leader>d :Explore<cr>
 
 " clear search highlighting

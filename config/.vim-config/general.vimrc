@@ -3,7 +3,7 @@ set shiftwidth=4
 set tabstop=4
 set expandtab
 set clipboard=unnamed
-colorscheme nord
+"colorscheme nord
 set background=dark
 set autoindent
 set t_Co=256
@@ -18,7 +18,6 @@ set wildmode=list:longest
 set ruler
 set statusline=%F
 set formatoptions=qrn1
-set colorcolumn=85
 
 " saner regex
 set ignorecase
@@ -65,3 +64,4 @@ set number
 "  autocmd VimEnter * :Vexplore
 "augroup END
 "
+set path+=**
