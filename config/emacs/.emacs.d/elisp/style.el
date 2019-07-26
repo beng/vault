@@ -7,16 +7,23 @@
 ;; disable toolbar
 (tool-bar-mode -1)
 
-;; enable global line numbers 
+;; enable global line numbers
 (global-linum-mode 1)
 
 ;; disable scrollbar
 (toggle-scroll-bar -1)
 
+;;;;;;;;;
+;; IDO setup
+;;;;;;;;;
+
 ;; "interactively do things" - no need to `tab` complete
 (ido-mode 1)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
+;; ido find file at point
+(setq ido-use-filename-at-point 'guess)
+;;;;;;;;;;
 
 ;; hide splash screen and startup banner
 (setq inhibit-startup-message t
@@ -43,3 +50,9 @@
 	      (let ((orig  (car mode-line-buffer-identification)))
                 `(:eval (cons (concat ,orig (abbreviate-file-name default-directory))
                               (cdr mode-line-buffer-identification)))))
+
+;; prevent emacs from quitting with unsaved buffers
+(setq confirm-kill-emacs 'y-or-n-p)
+
+;; remove trailing whitespace before saving
+(add-hook 'before-save-hook 'delete-trailing-whitespace)

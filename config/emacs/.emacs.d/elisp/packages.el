@@ -114,11 +114,23 @@
   (add-hook 'tuareg-mode-hook #'merlin-mode)
   (setq merlin-error-after-save nil))
 
+(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+      (when (and opam-share (file-directory-p opam-share))
+       ;; Register Merlin
+       (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+       (autoload 'merlin-mode "merlin" nil t nil)
+       ;; Automatically start it in OCaml buffers
+       (add-hook 'tuareg-mode-hook 'merlin-mode t)
+       (add-hook 'caml-mode-hook 'merlin-mode t)
+       ;; Use opam switch to lookup ocamlmerlin binary
+       (setq merlin-command 'opam)))
+
 (add-hook 'after-init-hook 'global-company-mode)
 
 ; Make company aware of merlin
 (with-eval-after-load 'company
- (add-to-list 'company-backends 'merlin-company-backend))
+  (add-to-list 'company-backends 'merlin-company-backend))
+
 ; Enable company on merlin managed buffers
 (add-hook 'merlin-mode-hook 'company-mode)
 
@@ -151,3 +163,69 @@
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t)
   (setq rust-format-on-save t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;
+;;
+;; golang setup
+;;
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package go-mode
+  :ensure t
+  :init
+  (setq gofmt-command "goimports")
+  (setq compile-command "go build -v && go test -v && go vet")
+  (add-hook 'before-save-hook 'gofmt-before-save))
+
+(use-package company-go
+  :ensure t
+  :init
+  (setq company-tooltip-limit 20)
+  (setq company-idle-delay .3)
+  (setq company-echo-delay 0)
+  (setq company-begin-commands '(self-insert-command)))
+
+; Make company aware of go
+(with-eval-after-load 'company
+  (add-to-list 'company-backends 'company-go))
+
+(let ((govet (flycheck-checker-get 'go-vet 'command)))
+  (when (equal (cadr govet) "tool")
+    (setf (cdr govet) (cddr govet))))
+
+;;;;;;;;;
+;; react/jsx formatting
+;;;;;;;;;
+(use-package rjsx-mode
+  :ensure t
+  :init)
+
+;;;;;;;;;
+;; evil mode
+;;;;;;;;;
+(use-package evil
+  :ensure t
+  :init (setq evil-want-C-u-scroll t)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map "jj" 'evil-normal-state)
+  (evil-ex-define-cmd "q[uit]" 'kill-buffer))
+
+
+;;;;;;;;;;
+;; terraform mode
+;;;;;;;;;;
+(use-package terraform-mode
+  :ensure t
+  :init
+  (setq terraform-indent-level 4))
+
+;;;;;;;;;;
+;; yaml mode
+;;;;;;;;;;
+(use-package yaml-mode
+  :ensure t
+  :mode ("\\.ya?ml\\'" . yaml-mode))
