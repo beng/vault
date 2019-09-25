@@ -1,8 +1,8 @@
 (require 'package)
 (require 'cl)
 (setq package-enable-at-startup nil)
-(setq package-archives '(("org" . "http://orgmode.org/elpa")
-			 ("gnu" . "http://elpa.gnu.org/packages/")
+(setq package-archives '(("org" . "https://orgmode.org/elpa")
+			 ("gnu" . "https://elpa.gnu.org/packages/")
 			 ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
@@ -203,16 +203,30 @@
   :ensure t
   :init)
 
+(use-package key-chord
+  :ensure t
+  :init
+  :config
+  (key-chord-mode 1))
+
 ;;;;;;;;;
 ;; evil mode
 ;;;;;;;;;
+
 (use-package evil
   :ensure t
   :init (setq evil-want-C-u-scroll t)
   :config
   (evil-mode 1)
-  (define-key evil-insert-state-map "jj" 'evil-normal-state)
-  (evil-ex-define-cmd "q[uit]" 'kill-buffer))
+  ;;(define-key evil-insert-state-map "jk" 'evil-normal-state)
+  (setq key-chord-two-keys-delay .05)
+  (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+  (evil-ex-define-cmd "q[uit]" 'kill-buffer)
+
+  ;; unbind M-. and M-, so that jump to definition works as expected
+  (with-eval-after-load 'evil-maps
+  (define-key evil-normal-state-map (kbd "M-.") nil)
+  (define-key evil-normal-state-map (kbd "M-,") nil)))
 
 
 ;;;;;;;;;;
@@ -229,3 +243,48 @@
 (use-package yaml-mode
   :ensure t
   :mode ("\\.ya?ml\\'" . yaml-mode))
+
+;;;;;;;;;;
+;; ivy mode
+;;;;;;;;;;
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1))
+
+(use-package which-key
+  :ensure t
+  :init
+  (setq which-key-separator " ")
+  (setq which-key-prefix-prefix "+")
+  :config
+  (which-key-mode 1))
+
+(use-package general
+  :ensure t
+  :config (general-define-key
+  :states '(normal visual insert emacs)
+  :prefix "SPC"
+  :non-normal-prefix "M-SPC"
+
+  "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
+  "SPC" '(counsel-M-x :which-key "counsel mx")
+  "f" '(counsel-find-file :which-key "find file")
+  "b" '(ivy-switch-buffer :which-key "switch buffers")
+  "wl"  '(windmove-right :which-key "move right")
+  "wh"  '(windmove-left :which-key "move left")
+  "wk"  '(windmove-up :which-key "move up")
+  "wj"  '(windmove-down :which-key "move bottom")
+  "w/"  '(split-window-right :which-key "split right")
+  "w-"  '(split-window-below :which-key "split bottom")
+  "wx"  '(delete-window :which-key "delete window")
+  "es"  '(eshell :which-key "open eshell")
+  "tff" '(toggle-frame-fullscreen :which-key "toggle frame fullscreen")))
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode)
+  (setq projectile-completion-system 'ivy)
+  :init
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
