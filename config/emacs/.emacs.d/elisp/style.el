@@ -8,7 +8,7 @@
 (tool-bar-mode -1)
 
 ;; enable global line numbers
-(global-linum-mode 1)
+;;(global-linum-mode 1)
 
 ;; disable scrollbar
 (toggle-scroll-bar -1)
@@ -16,13 +16,12 @@
 ;;;;;;;;;
 ;; IDO setup
 ;;;;;;;;;
-
 ;; "interactively do things" - no need to `tab` complete
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-;; ido find file at point
-(setq ido-use-filename-at-point 'guess)
+;; (ido-mode 1)
+;; (setq ido-enable-flex-matching t)
+;; (setq ido-everywhere t)
+;; ;; ido find file at point
+;; (setq ido-use-filename-at-point 'guess)
 ;;;;;;;;;;
 
 ;; hide splash screen and startup banner
@@ -56,3 +55,16 @@
 
 ;; remove trailing whitespace before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; display directory + current filename
+(with-eval-after-load 'subr-x
+  (setq-default mode-line-buffer-identification
+		'(:eval (format-mode-line
+			 (propertized-buffer-identification
+			  (or (when-let* ((buffer-file-truename buffer-file-truename)
+					  (prj (cdr-safe (project-current)))
+					  (prj-parent (file-name-directory (directory-file-name (expand-file-name prj)))))
+				(concat
+				 (file-relative-name (file-name-directory buffer-file-truename) prj-parent)
+				 (file-name-nondirectory buffer-file-truename)))
+			      "%b"))))))
