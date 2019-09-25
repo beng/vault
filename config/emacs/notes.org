@@ -1,4 +1,4 @@
-** Helpful keyboard shortcuts 
+** Helpful keyboard shortcuts
 - Save current window config
 C-x r w r
 
@@ -11,3 +11,4 @@ C-u <# of rows> C-x ^
 - Close selected frame
 C-x 5 0
 
+* Jump to definition doesn't work correctly in evil-mode since evil-mode bindings take precedence over other ones - in order to jump to def, need to be in `insert` mode, not `normal` or `visual` mode https://emacs.stackexchange.com/questions/20779/m-and-m-in-evil-mode
