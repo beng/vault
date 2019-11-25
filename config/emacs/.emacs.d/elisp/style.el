@@ -11,7 +11,10 @@
 ;;(global-linum-mode 1)
 
 ;; disable scrollbar
-(toggle-scroll-bar -1)
+;;(toggle-scroll-bar -1)
+;; using toggle scroll bar seems to not be working
+;; when running emacs in daemon mode
+(customize-set-variable 'scroll-bar-mode nil)
 
 ;;;;;;;;;
 ;; IDO setup

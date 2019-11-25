@@ -11,8 +11,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-hide-leading-stars t)
  '(org-log-done (quote time) t)
  '(package-selected-packages
    (quote
-    (yaml-mode terraform-mode evil rjsx-mode kivy-mode counsel cargo rust-mode racer exec-path-from-shell atom-one-dark-theme importmagic flycheck pyenv-mode elpy magit material-theme use-package)))
+    (lsp-ui company-lsp lsp-mode reason counsel-projectile projectile general which-key key-chord yaml-mode terraform-mode evil rjsx-mode kivy-mode counsel cargo rust-mode racer exec-path-from-shell atom-one-dark-theme importmagic flycheck pyenv-mode elpy magit material-theme use-package)))
  '(python-shell-interpreter "python"))

@@ -92,6 +92,8 @@
 (with-eval-after-load 'merlin
   (use-package flycheck-ocaml
     :ensure t
+    :hook
+    ((reason-mode tuareg-mode caml-mode) . merlin-mode)
     :config
     ;; Disable Merlin's own error checking
     (setq merlin-error-after-save nil)
@@ -283,8 +285,11 @@
 
 (use-package projectile
   :ensure t
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
   :config
-  (projectile-global-mode)
-  (setq projectile-completion-system 'ivy)
+  (projectile-mode)
   :init
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  (setq projectile-completion-system 'ivy))
+
+;;(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)

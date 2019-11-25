@@ -7,3 +7,4 @@
 ;; load 'customize' auto-generated variables
 (setq custom-file "~/.emacs.d/elisp/custom.el")
 (load custom-file)
+(put 'downcase-region 'disabled nil)
