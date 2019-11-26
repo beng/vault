@@ -63,8 +63,6 @@
 ;; remove trailing whitespace before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-
-
 ;; show current file name + path in status line
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
@@ -73,4 +71,4 @@
 
 
 ;; set font to hack size 12
-(set-frame-font "Hack 14" nil t)
+(set-frame-font "Hack 12" nil t)
