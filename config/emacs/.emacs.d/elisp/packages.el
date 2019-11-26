@@ -12,17 +12,14 @@
   (package-install 'use-package))
 (require 'use-package)
 
-;; use atom theme
 (use-package atom-one-dark-theme
   :ensure t
   :config
   (load-theme 'atom-one-dark t))
 
-;; magit - git plugin
 (use-package magit
   :ensure t)
 
-;; elpy - python development
 (use-package elpy
   :ensure t
   :init
@@ -33,7 +30,6 @@
   (setenv "WORKON_HOME" "~/.pyenv/versions")
   (setq elpy-rpc-backend "jedi"))
 
-;; autopep8
 (use-package py-autopep8
   :ensure t
   :after (elpy))
@@ -54,7 +50,6 @@
   (define-key company-active-map (kbd "C-n") #'company-select-next)
   (define-key company-active-map (kbd "C-p") #'company-select-previous))
 
-
 (use-package lsp-mode
   :commands (lsp)
   :config
@@ -65,13 +60,11 @@
   (use-package lsp-ui
     :commands lsp-ui-mode))
 
-;; flycheck
 (use-package flycheck
   :ensure t
   :init
   (global-flycheck-mode))
 
-;; perspective mode
 (use-package perspective
   :ensure t
   :config
@@ -238,16 +231,10 @@
   :init
   (setq terraform-indent-level 4))
 
-;;;;;;;;;;
-;; yaml mode
-;;;;;;;;;;
 (use-package yaml-mode
   :ensure t
   :mode ("\\.ya?ml\\'" . yaml-mode))
 
-;;;;;;;;;;
-;; ivy mode
-;;;;;;;;;;
 (use-package ivy
   :bind
   ("\C-s" . swiper)
@@ -272,8 +259,8 @@
 
   "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
   "SPC" '(counsel-M-x :which-key "counsel mx")
-  "f" '(counsel-find-file :which-key "find file")
-  "b" '(ivy-switch-buffer :which-key "switch buffers")
+  "f"   '(counsel-find-file :which-key "find file")
+  "b"   '(ivy-switch-buffer :which-key "switch buffers")
   "wl"  '(windmove-right :which-key "move right")
   "wh"  '(windmove-left :which-key "move left")
   "wk"  '(windmove-up :which-key "move up")
@@ -281,8 +268,11 @@
   "w/"  '(split-window-right :which-key "split right")
   "w-"  '(split-window-below :which-key "split bottom")
   "wx"  '(delete-window :which-key "delete window")
-  "es"  '(eshell :which-key "open eshell")
-  "tff" '(toggle-frame-fullscreen :which-key "toggle frame fullscreen")))
+  "es"  '(eshell :which-key "open eshell in fullscreen")
+  "'"   '(shell-pop :which-key "pop open a quick shell")
+  "tff" '(toggle-frame-fullscreen :which-key "toggle frame fullscreen")
+  "wr"  '(winner-redo :which-key "winner redo")
+  "wu" '(winner-undo :which-key "winner undo")))
 
 (use-package projectile
   :ensure t
@@ -294,8 +284,6 @@
   :init
   (setq projectile-completion-system 'ivy))
 
-;;(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
 (use-package doom-modeline
   :ensure t
   :hook (after-init . doom-modeline-mode))
@@ -306,8 +294,14 @@
 ;; used for autocomplete with certain languages like javascript
 (use-package eglot)
 
-
 (use-package company-box
   :diminish
   :init (setq company-box-icons-alist 'company-box-icons-all-the-icons)
   :hook (company-mode . company-box-mode))
+
+(use-package winner
+  :init (winner-mode t))
+
+(use-package shell-pop
+  :ensure t
+  :custom (shell-pop-shell-type '("eshell" "eshell" (lambda () (eshell)))) (shell-pop-full-span t))
