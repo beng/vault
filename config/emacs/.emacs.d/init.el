@@ -8,3 +8,7 @@
 (setq custom-file "~/.emacs.d/elisp/custom.el")
 (load custom-file)
 (put 'downcase-region 'disabled nil)
+
+;; increase garabage collection limits
+(setq gc-cons-threshold 50000000)
+(setq large-file-warning-threshold 100000000)

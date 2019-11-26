@@ -40,6 +40,10 @@
 ;; highlight matching ()
 (show-paren-mode 1)
 
+(line-number-mode +1)
+(global-display-line-numbers-mode 1)
+(column-number-mode t)
+(size-indication-mode t)
 
 ;; show battery percentage
 (display-battery-mode t)
@@ -59,15 +63,14 @@
 ;; remove trailing whitespace before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; display directory + current filename
-(with-eval-after-load 'subr-x
-  (setq-default mode-line-buffer-identification
-		'(:eval (format-mode-line
-			 (propertized-buffer-identification
-			  (or (when-let* ((buffer-file-truename buffer-file-truename)
-					  (prj (cdr-safe (project-current)))
-					  (prj-parent (file-name-directory (directory-file-name (expand-file-name prj)))))
-				(concat
-				 (file-relative-name (file-name-directory buffer-file-truename) prj-parent)
-				 (file-name-nondirectory buffer-file-truename)))
-			      "%b"))))))
+
+
+;; show current file name + path in status line
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+       (abbreviate-file-name (buffer-file-name))
+       "%b"))))
+
+
+;; set font to hack size 12
+(set-frame-font "Hack 14" nil t)

@@ -42,6 +42,22 @@
 (use-package pyenv-mode
   :ensure t)
 
+(use-package company
+  :ensure t
+  :hook (prog-mode . company-mode)
+  :config (setq company-tooltip-align-annotations t)
+  (setq company-minimum-prefix-length 1))
+
+(use-package lsp-mode
+  :commands (lsp)
+  :config
+  (require 'lsp-clients)
+  (use-package company-lsp
+     :config
+     (push 'company-lsp company-backends))
+  (use-package lsp-ui
+    :commands lsp-ui-mode))
+
 ;; flycheck
 (use-package flycheck
   :ensure t
@@ -61,9 +77,6 @@
     :ensure t
     :config
     (exec-path-from-shell-initialize)))
-
-
-
 
 (cond
  ((eq window-system 'ns) ; macosx
@@ -144,27 +157,19 @@
 ;;
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package flycheck-rust
-	     :ensure t)
+(use-package toml-mode
+  :ensure t)
 
-(with-eval-after-load 'rust-mode
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+(use-package rust-mode
+  :hook (rust-mode . lsp)
+  :config
+  (setq rust-format-on-save t))
 
 (use-package cargo
-  :ensure t
-  :init
-  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+  :hook (rust-mode . cargo-minor-mode))
 
-(use-package racer
-  :ensure t
-  :init
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'rust-mode-hook #'eldoc-mode)
-  (add-hook 'rust-mode-hook #'company-mode)
-  (require 'rust-mode)
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-  (setq company-tooltip-align-annotations t)
-  (setq rust-format-on-save t))
+(use-package flycheck-rust
+  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -174,33 +179,24 @@
 ;;
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package go-mode
   :ensure t
+  :bind
+  ("C-c C-j" . lsp-find-definition)
+  ("C-c C-d" . lsp-describe-thing-at-point)
+
+  :hook ((go-mode . lsp-deferred)
+         (before-save . lsp-format-buffer)
+         (before-save . lsp-organize-imports))
   :init
   (setq gofmt-command "goimports")
   (setq compile-command "go build -v && go test -v && go vet")
   (add-hook 'before-save-hook 'gofmt-before-save))
 
-(use-package company-go
-  :ensure t
-  :init
-  (setq company-tooltip-limit 20)
-  (setq company-idle-delay .3)
-  (setq company-echo-delay 0)
-  (setq company-begin-commands '(self-insert-command)))
-
-; Make company aware of go
-(with-eval-after-load 'company
-  (add-to-list 'company-backends 'company-go))
-
 (let ((govet (flycheck-checker-get 'go-vet 'command)))
   (when (equal (cadr govet) "tool")
     (setf (cdr govet) (cddr govet))))
 
-;;;;;;;;;
-;; react/jsx formatting
-;;;;;;;;;
 (use-package rjsx-mode
   :ensure t
   :init)
@@ -210,10 +206,6 @@
   :init
   :config
   (key-chord-mode 1))
-
-;;;;;;;;;
-;; evil mode
-;;;;;;;;;
 
 (use-package evil
   :ensure t
@@ -289,7 +281,18 @@
   ("C-c p" . projectile-command-map)
   :config
   (projectile-mode)
+  (setq projectile-git-submodule-command nil)
   :init
   (setq projectile-completion-system 'ivy))
 
 ;;(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
+
+(use-package all-the-icons
+  :ensure t)
+
+;; used for autocomplete with certain languages like javascript
+(use-package eglot)
