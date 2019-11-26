@@ -304,4 +304,13 @@
 (use-package shell-pop
   :ensure t
   :bind ("C-'" . shell-pop)
-  :custom (shell-pop-shell-type '("eshell" "eshell" (lambda () (eshell)))) (shell-pop-full-span t))
+  :custom
+  ;(shell-pop-shell-type '("eshell" "eshell" (lambda () (eshell)))) (shell-pop-full-span t))
+  (shell-pop-shell-type '("vterm" "*vterm*" (lambda nil (vterm)))))
+
+;; Followed the below links to get vterm installed
+;; - https://develop.spacemacs.org/layers/+tools/shell/README.html
+;; - https://stackoverflow.com/questions/40067547/glibtool-on-macbook
+;; - used shellpop from here https://wolfecub.github.io/dotfiles/
+(use-package vterm
+    :ensure t)
