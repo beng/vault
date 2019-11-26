@@ -48,6 +48,13 @@
   :config (setq company-tooltip-align-annotations t)
   (setq company-minimum-prefix-length 1))
 
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "M-n") nil)
+  (define-key company-active-map (kbd "M-p") nil)
+  (define-key company-active-map (kbd "C-n") #'company-select-next)
+  (define-key company-active-map (kbd "C-p") #'company-select-previous))
+
+
 (use-package lsp-mode
   :commands (lsp)
   :config
@@ -89,7 +96,6 @@
 
 ;;(use-package merlin
 ;;  :ensure t)
-
 
 ;; this was a MASSIVE PITA to setup, took multiple hours and UTOP still doenst work great
 ;; guides that were used
@@ -198,8 +204,9 @@
     (setf (cdr govet) (cddr govet))))
 
 (use-package rjsx-mode
-  :ensure t
-  :init)
+  :ensure t)
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
 
 (use-package key-chord
   :ensure t
@@ -242,6 +249,8 @@
 ;; ivy mode
 ;;;;;;;;;;
 (use-package ivy
+  :bind
+  ("\C-s" . swiper)
   :ensure t
   :config
   (ivy-mode 1))
@@ -296,3 +305,9 @@
 
 ;; used for autocomplete with certain languages like javascript
 (use-package eglot)
+
+
+(use-package company-box
+  :diminish
+  :init (setq company-box-icons-alist 'company-box-icons-all-the-icons)
+  :hook (company-mode . company-box-mode))
