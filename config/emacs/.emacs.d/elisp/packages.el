@@ -269,7 +269,6 @@
   "w-"  '(split-window-below :which-key "split bottom")
   "wx"  '(delete-window :which-key "delete window")
   "es"  '(eshell :which-key "open eshell in fullscreen")
-  "'"   '(shell-pop :which-key "pop open a quick shell")
   "tff" '(toggle-frame-fullscreen :which-key "toggle frame fullscreen")
   "wr"  '(winner-redo :which-key "winner redo")
   "wu" '(winner-undo :which-key "winner undo")))
@@ -304,4 +303,5 @@
 
 (use-package shell-pop
   :ensure t
+  :bind ("C-'" . shell-pop)
   :custom (shell-pop-shell-type '("eshell" "eshell" (lambda () (eshell)))) (shell-pop-full-span t))
