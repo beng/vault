@@ -3,6 +3,7 @@
 (load-library "packages")
 (load-library "style")
 (load-library "orgmode")
+(load-library "aliases")
 
 ;; load 'customize' auto-generated variables
 (setq custom-file "~/.emacs.d/elisp/custom.el")
