@@ -72,3 +72,15 @@
 
 ;; set font to hack size 12
 (set-frame-font "Hack 12" nil t)
+
+;; open new buffer windows in bottom split opposed to on right hand side
+(setq split-height-threshold nil)
+(setq split-width-threshold most-positive-fixnum)
+
+
+;; auto wrap lines based on paragraph fill
+(auto-fill-mode t)
+
+;; set transparency/opacity
+(set-frame-parameter (selected-frame) 'alpha '(97 97))
+(add-to-list 'default-frame-alist '(alpha 95 95))

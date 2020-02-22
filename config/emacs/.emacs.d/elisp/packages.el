@@ -58,7 +58,10 @@
      :config
      (push 'company-lsp company-backends))
   (use-package lsp-ui
-    :commands lsp-ui-mode))
+    :commands lsp-ui-mode
+    :config
+    ;; disable documentation popup on hover
+    (setq lsp-ui-doc-enable nil)))
 
 (use-package flycheck
   :ensure t
@@ -160,12 +163,24 @@
   :ensure t)
 
 (use-package rust-mode
-  :hook (rust-mode . lsp)
+  :hook
+  (rust-mode . lsp)
+  (rust-mode . (lambda () (setq tab-width 4)))
   :config
   (setq rust-format-on-save t))
+  ; rust-lsp has indent at 8
+  ;(setq rust-indent-offset tab-width)
+;; (add-hook 'rust-mode-hook (lambda () (setq tab-width 4)))
+;;
+;; (defcustom rust-indent-offset 4
+;;   "*Indent Rust code by this number of spaces."
+;;   :group 'rust-mode)
+
 
 (use-package cargo
-  :hook (rust-mode . cargo-minor-mode))
+  :hook
+  (rust-mode . cargo-minor-mode)
+  (toml-mode . cargo-minor-mode))
 
 (use-package flycheck-rust
   :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
@@ -271,7 +286,8 @@
   "es"  '(eshell :which-key "open eshell in fullscreen")
   "tff" '(toggle-frame-fullscreen :which-key "toggle frame fullscreen")
   "wr"  '(winner-redo :which-key "winner redo")
-  "wu" '(winner-undo :which-key "winner undo")))
+  "wu" '(winner-undo :which-key "winner undo")
+  "gh" '(counsel-org-goto-all :which-key "counsel org go-to all")))
 
 (use-package projectile
   :ensure t
@@ -314,3 +330,13 @@
 ;; - used shellpop from here https://wolfecub.github.io/dotfiles/
 (use-package vterm
     :ensure t)
+
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(use-package writeroom-mode
+  :ensure t
+  :init (add-hook 'org-mode-hook 'writeroom-mode)
+  :after org)
