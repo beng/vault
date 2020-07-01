@@ -1,3 +1,23 @@
+vterm_printf(){
+    # Some of the most useful features in vterm
+    # (e.g., directory-tracking and prompt-tracking or message passing)
+    # require shell-side configurations. The main goal of these additional
+    # functions is to enable the shell to send information to vterm via properly
+    # escaped sequences. A function that helps in this task, vterm_printf, is defined below.
+    # This function is widely used throughout this readme.
+
+    if [ -n "$TMUX" ]; then
+        # Tell tmux to pass the escape sequences through
+        # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+
 my-local-ip() {
     ifconfig en0 | grep "inet " | awk '{print $2}'
 }
@@ -18,7 +38,7 @@ close-tunnel() {
 
 
 # Useful for appending headers to large files
-    append-header() {
+append-header() {
     echo $1 | cat - $2 > temp && mv temp $2
 }
 
@@ -63,7 +83,7 @@ $@
 
 dockerpsrm() {
     docker rm -f $(docker ps -a | awk '{ if ($1 != "CONTAINER") print $1}')
-    }
+}
 
 dockerimagerm() {
     docker rmi $(docker images | awk '{ if ($1 == "<none>") print $3 }')
@@ -76,58 +96,41 @@ resolve() {
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-ZSH_THEME="lambda"
+ZSH_THEME="minimal"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
-plugins=(git \
-    pip \
-    brew \
-    cabal \
-    lein \
-    osx \
-    zsh-syntax-highlighting \
-    history-substring-search \
-    colorize \
-    colored-man-pages)
+plugins=(history-substring-search colored-man-pages)
 
 source $ZSH/oh-my-zsh.sh
 
 export PATH="$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/opt/X11/bin:/usr/texbin:/usr/local/terraform-0.8.6"
 export PATH=/usr/local/bin:$PATH
-export RC=$HOME/.zshrc
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export PATH=$PATH:$HOME/.cargo/bin
-export PATH=$PATH:$GOPATH/src
-export PATH="$HOME/.cargo/bin:$PATH"
 
 alias pgstart="postgres -D /usr/local/var/postgres"
 alias pys="python -m SimpleHTTPServer"
 alias ip="ipython"
 alias pss="ps aux | grep -i $1"
 alias pup="pip install -U pip"
-alias clear="clear && printf '\e[3J'"
-
-alias bibliotech="~/Documents/work/bibliotech"
 
 # OPAM configuration
-. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+#. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 # node6 bs
-export PATH="/usr/local/opt/node@6/bin:$PATH"
+#export PATH="/usr/local/opt/node@6/bin:$PATH"
 
 # pyenv setup
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"
-fi
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+#if command -v pyenv 1>/dev/null 2>&1; then
+#    eval "$(pyenv init -)"
+#fi
+#if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 #export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 source ~/.inputrc
 
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+#export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
 if [ -f ~/.enigma ]; then
     source ~/.enigma
 fi
+
+source ~/.bashrc
