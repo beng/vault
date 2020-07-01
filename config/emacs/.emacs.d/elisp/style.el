@@ -23,7 +23,7 @@
 ;; (ido-mode 1)
 ;; (setq ido-enable-flex-matching t)
 ;; (setq ido-everywhere t)
-;; ;; ido find file at point
+;; ;; Ido Find file at point
 ;; (setq ido-use-filename-at-point 'guess)
 ;;;;;;;;;;
 
@@ -77,10 +77,13 @@
 (setq split-height-threshold nil)
 (setq split-width-threshold most-positive-fixnum)
 
-
-;; auto wrap lines based on paragraph fill
-(auto-fill-mode t)
-
 ;; set transparency/opacity
 (set-frame-parameter (selected-frame) 'alpha '(97 97))
 (add-to-list 'default-frame-alist '(alpha 95 95))
+
+
+;; auto word wrap based on fill-column
+(setq-default auto-fill-function 'do-auto-fill)
+
+;; vertcal line height
+(setq-default line-spacing 3)

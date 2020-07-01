@@ -1,0 +1,13 @@
+* Mappings
+
+
+  | Source Key | Destination Key |
+  |------------+-----------------|
+  | Cmd        | Delete          |
+  | Left Ctrl  | Caps Lock       |
+  | Left Alt   | Left Ctrl       |
+  | Caps Lock  | Left Ctrl       | Physicallly moved keys
+  | Tilde      | Home            | Physicallly moved keys
+  | +=         | End             |
+
+

@@ -224,7 +224,9 @@
 
 (use-package evil
   :ensure t
-  :init (setq evil-want-C-u-scroll t)
+  :init
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
   :config
   (evil-mode 1)
   ;;(define-key evil-insert-state-map "jk" 'evil-normal-state)
@@ -237,6 +239,16 @@
   (define-key evil-normal-state-map (kbd "M-.") nil)
   (define-key evil-normal-state-map (kbd "M-,") nil)))
 
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :custom
+  (evil-collection-setup-minibuffer nil)
+  (evil-collection-outline-bind-tab-p t)
+  (evil-collection-company-use-tng nil)
+  (evil-collection-init 'vterm)
+  :config
+  (evil-collection-init))
 
 ;;;;;;;;;;
 ;; terraform mode
@@ -251,8 +263,6 @@
   :mode ("\\.ya?ml\\'" . yaml-mode))
 
 (use-package ivy
-  :bind
-  ("\C-s" . swiper)
   :ensure t
   :config
   (ivy-mode 1))
@@ -286,7 +296,9 @@
   "es"  '(eshell :which-key "open eshell in fullscreen")
   "tff" '(toggle-frame-fullscreen :which-key "toggle frame fullscreen")
   "wr"  '(winner-redo :which-key "winner redo")
-  "wu" '(winner-undo :which-key "winner undo")
+  "wu"  '(winner-undo :which-key "winner undo")
+  "ww"  '(save-buffer :which-key "save buffer")
+  "ss"  '(swiper :which-key "swiper search")
   "gh" '(counsel-org-goto-all :which-key "counsel org go-to all")))
 
 (use-package projectile
@@ -329,14 +341,14 @@
 ;; - https://stackoverflow.com/questions/40067547/glibtool-on-macbook
 ;; - used shellpop from here https://wolfecub.github.io/dotfiles/
 (use-package vterm
-    :ensure t)
+  :ensure t)
 
 (use-package org-bullets
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-(use-package writeroom-mode
-  :ensure t
-  :init (add-hook 'org-mode-hook 'writeroom-mode)
-  :after org)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
