@@ -78,8 +78,8 @@
 (setq split-width-threshold most-positive-fixnum)
 
 ;; set transparency/opacity
-(set-frame-parameter (selected-frame) 'alpha '(97 97))
-(add-to-list 'default-frame-alist '(alpha 95 95))
+(set-frame-parameter (selected-frame) 'alpha '(98 98))
+(add-to-list 'default-frame-alist '(alpha 96 96))
 
 
 ;; auto word wrap based on fill-column
@@ -87,3 +87,7 @@
 
 ;; vertcal line height
 (setq-default line-spacing 3)
+
+;; wrap to opposite of screen when using
+;; windmove to navigate panes
+(setq windmove-wrap-around t)

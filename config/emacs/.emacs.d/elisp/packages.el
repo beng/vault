@@ -20,28 +20,42 @@
 (use-package magit
   :ensure t)
 
-(use-package elpy
+;; (use-package elpy
+;;   :ensure t
+;;   :init
+;;   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save t)
+;;   :config
+;;   (package-initialize)
+;;   (elpy-enable)
+;;   (setenv "WORKON_HOME" "~/.pyenv/versions")
+;;   (setq elpy-test-pytest-runner-command '("py.test" "-s"))
+;;   (setq elpy-rpc-backend "jedi"))
+
+
+;; (use-package py-autopep8
+;;   :ensure t
+;;   ;:after (elpy)
+;;   :config
+;;   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+
+(use-package pyvenv
   :ensure t
-  :init
-  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save t)
   :config
-  (package-initialize)
-  (elpy-enable)
   (setenv "WORKON_HOME" "~/.pyenv/versions")
-  (setq elpy-rpc-backend "jedi"))
-
-(use-package py-autopep8
-  :ensure t
-  :after (elpy))
-
-;; elpy + pyenv
-(use-package pyenv-mode
-  :ensure t)
+  (pyvenv-mode 1))
+;; ;; elpy + pyenv
+;; (use-package pyenv-mode
+;;   :ensure t
+;;   :config
+;;   (setenv "WORKON_HOME" "~/.pyenv/versions")
+;;   (pyenv-mode))
 
 (use-package company
   :ensure t
   :hook (prog-mode . company-mode)
   :config (setq company-tooltip-align-annotations t)
+  (setq company-dabbrev-downcase .5)
+  (setq company-idle-delay .5)
   (setq company-minimum-prefix-length 1))
 
 (with-eval-after-load 'company
@@ -51,17 +65,41 @@
   (define-key company-active-map (kbd "C-p") #'company-select-previous))
 
 (use-package lsp-mode
-  :commands (lsp)
+  :hook (
+	 (python-mode . lsp)
+	 (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package company-lsp
   :config
-  (require 'lsp-clients)
-  (use-package company-lsp
-     :config
-     (push 'company-lsp company-backends))
-  (use-package lsp-ui
-    :commands lsp-ui-mode
-    :config
+  (push 'company-lsp company-backends))
+
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol)
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config
     ;; disable documentation popup on hover
-    (setq lsp-ui-doc-enable nil)))
+    (setq lsp-ui-doc-enable nil))
+
+
+
+;; (use-package lsp-mode
+;;   :commands (lsp)
+;;   :hook
+;;   (add-hook 'python-mode-hook #'lsp)
+;;   :config
+;;   (add-hook 'python-mode-hook #'lsp)
+;;   (require 'lsp-clients)
+;;   (use-package company-lsp
+;;      :config
+;;      (push 'company-lsp company-backends))
+;;   (use-package lsp-ui
+;;     :commands lsp-ui-mode
+;;     :config
+;;     ;; disable documentation popup on hover
+;;     (setq lsp-ui-doc-enable nil)))
 
 (use-package flycheck
   :ensure t
@@ -232,12 +270,14 @@
   ;;(define-key evil-insert-state-map "jk" 'evil-normal-state)
   (setq key-chord-two-keys-delay .05)
   (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-  (evil-ex-define-cmd "q[uit]" 'kill-buffer)
 
   ;; unbind M-. and M-, so that jump to definition works as expected
   (with-eval-after-load 'evil-maps
-  (define-key evil-normal-state-map (kbd "M-.") nil)
-  (define-key evil-normal-state-map (kbd "M-,") nil)))
+    (define-key evil-normal-state-map (kbd "M-.") nil)
+    (define-key evil-normal-state-map (kbd "M-,") nil))
+  (evil-ex-define-cmd "q[uit]" 'kill-buffer)
+  (evil-ex-define-cmd "q" #'kill-this-buffer)
+  (evil-ex-define-cmd "wq" #'ian/save-and-kill-this-buffer))
 
 (use-package evil-collection
   :ensure t
@@ -299,7 +339,9 @@
   "wu"  '(winner-undo :which-key "winner undo")
   "ww"  '(save-buffer :which-key "save buffer")
   "ss"  '(swiper :which-key "swiper search")
-  "gh" '(counsel-org-goto-all :which-key "counsel org go-to all")))
+  "gh"  '(counsel-org-goto-all :which-key "counsel org go-to all")
+  "ptt" '(python-pytest :which-key "python pytest")
+  "ptf" '(python-pytest-file :which-key "python pytest file")))
 
 (use-package projectile
   :ensure t
@@ -338,7 +380,7 @@
 
 ;; Followed the below links to get vterm installed
 ;; - https://develop.spacemacs.org/layers/+tools/shell/README.html
-;; - https://stackoverflow.com/questions/40067547/glibtool-on-macbook
+    ;; - https://stackoverflow.com/questions/40067547/glibtool-on-macbook
 ;; - used shellpop from here https://wolfecub.github.io/dotfiles/
 (use-package vterm
   :ensure t)
@@ -348,7 +390,31 @@
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((python . t)))
+
+(defun enable-doom-modeline-icons (_frame)
+  (setq doom-modeline-icon t))
+
+(add-hook 'after-make-frame-functions
+          #'enable-doom-modeline-icons)
+
+
+;; (use-package lsp-python-ms
+;;   :ensure t
+;;   ;;:after elpy
+;;   :init (setq lsp-python-ms-auto-install-server t)
+;;   :hook
+;;   (python-mode . (lambda ()
+;;                   (require 'lsp-python-ms)
+;;                   (lsp))))
+(use-package python-pytest
+  :ensure t
+  :after python
+  :custom
+  (python-pytest-arguments
+   '("-s")
+   '("--color=yes")))
+    ;;"--failed-first"   ;; run the previous failed tests first
+    ;;"--maxfail=5"))    ;; exit in 5 continuous failures in a run
