@@ -12,6 +12,11 @@ export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
 export PATH="/usr/local/sbin:$PATH"
 
 install_or_update_python_tools() {
-     pip install -U pip rope jedi importmagic autopep8 flake8 'python-language-server[all]'
+     pip install -U pip black jedi importmagic autopep8 flake8 "python-language-server[all]" --force-reinstall
+     #pip install -U pip black rope jedi importmagic autopep8 flake8 "python-language-server[all]"
 }
 
+alias lsl="ls -l"
+alias lsal="ls -al"
+
+source ~/.enigma.env

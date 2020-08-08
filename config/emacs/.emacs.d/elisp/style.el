@@ -70,7 +70,6 @@
        "%b"))))
 
 
-;; set font to hack size 12
 (set-frame-font "Hack 12" nil t)
 
 ;; open new buffer windows in bottom split opposed to on right hand side
@@ -78,7 +77,7 @@
 (setq split-width-threshold most-positive-fixnum)
 
 ;; set transparency/opacity
-(set-frame-parameter (selected-frame) 'alpha '(98 98))
+(set-frame-parameter (selected-frame) 'alpha '(100))
 (add-to-list 'default-frame-alist '(alpha 96 96))
 
 
@@ -91,3 +90,7 @@
 ;; wrap to opposite of screen when using
 ;; windmove to navigate panes
 (setq windmove-wrap-around t)
+
+(display-time)
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)

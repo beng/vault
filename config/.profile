@@ -5,4 +5,3 @@ test -r /Users/sesshin/.opam/opam-init/init.sh && . /Users/sesshin/.opam/opam-in
 eval `opam config env`
 
 #export PATH="$HOME/.cargo/bin:$PATH"
-

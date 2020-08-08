@@ -1,17 +1,3 @@
-(require 'package)
-(require 'cl)
-(setq package-enable-at-startup nil)
-(setq package-archives '(("org" . "https://orgmode.org/elpa")
-			 ("gnu" . "https://elpa.gnu.org/packages/")
-			 ("melpa" . "https://melpa.org/packages/")))
-(package-initialize)
-
-;; bootstrap `use-package`
-(unless (package-installed-p 'use-package)
-`  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package)
-
 (use-package atom-one-dark-theme
   :ensure t
   :config
@@ -66,12 +52,18 @@
 
 (use-package lsp-mode
   :hook (
-	 (python-mode . lsp)
-	 (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+	 ((python-mode c-mode) . lsp)
+	 (before-save . lsp-format-buffer)
+	 (before-save . lsp-organize-imports))
+  :commands lsp
+  :custom
+  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
+  (lsp-file-watch-threshold 2000)
+  (read-process-output-max (* 1024 1024)))
 
 (use-package company-lsp
   :config
+  (setq lsp-prefer-capf t)
   (push 'company-lsp company-backends))
 
 (use-package lsp-ivy
@@ -79,9 +71,47 @@
 
 (use-package lsp-ui
   :commands lsp-ui-mode
-  :config
-    ;; disable documentation popup on hover
-    (setq lsp-ui-doc-enable nil))
+  :custom
+    ;; lsp-ui-doc
+    (lsp-ui-doc-enable nil)
+    (lsp-ui-doc-header t)
+    (lsp-ui-doc-include-signature nil)
+    (lsp-ui-doc-position 'at-point) ;; top, bottom, or at-point
+    (lsp-ui-doc-max-width 120)
+    (lsp-ui-doc-max-height 30)
+    (lsp-ui-doc-use-childframe t)
+    (lsp-ui-doc-use-webkit t)
+    ;; lsp-ui-flycheck
+    (lsp-ui-flycheck-enable nil)
+    ;; lsp-ui-sideline
+    (lsp-ui-sideline-enable nil)
+    (lsp-ui-sideline-ignore-duplicate t)
+    (lsp-ui-sideline-show-symbol t)
+    (lsp-ui-sideline-show-hover t)
+    (lsp-ui-sideline-show-diagnostics nil)
+    (lsp-ui-sideline-show-code-actions t)
+    (lsp-ui-sideline-code-actions-prefix "")
+    ;; lsp-ui-imenu
+    (lsp-ui-imenu-enable t)
+    (lsp-ui-imenu-kind-position 'top)
+    ;; lsp-ui-peek
+    (lsp-ui-peek-enable t)
+    (lsp-ui-peek-peek-height 20)
+    (lsp-ui-peek-list-width 50)
+    (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
+    :preface
+    (defun ladicle/toggle-lsp-ui-doc ()
+      (interactive)
+      (if lsp-ui-doc-mode
+        (progn
+          (lsp-ui-doc-mode -1)
+          (lsp-ui-doc--hide-frame))
+         (lsp-ui-doc-mode 1)))
+    :hook
+    (lsp-mode . lsp-ui-mode))
+  ;; :config
+  ;;   ;; disable documentation popup on hover
+  ;;   (setq lsp-ui-doc-enable nil))
 
 
 
@@ -341,7 +371,8 @@
   "ss"  '(swiper :which-key "swiper search")
   "gh"  '(counsel-org-goto-all :which-key "counsel org go-to all")
   "ptt" '(python-pytest :which-key "python pytest")
-  "ptf" '(python-pytest-file :which-key "python pytest file")))
+  "ptf" '(python-pytest-file :which-key "python pytest file")
+  "mg"  '(magit-status :which-key "magit status")))
 
 (use-package projectile
   :ensure t
@@ -365,7 +396,8 @@
 
 (use-package company-box
   :diminish
-  :init (setq company-box-icons-alist 'company-box-icons-all-the-icons)
+  :init
+  (setq company-box-icons-alist 'company-box-icons-all-the-icons)
   :hook (company-mode . company-box-mode))
 
 (use-package winner
@@ -418,3 +450,12 @@
    '("--color=yes")))
     ;;"--failed-first"   ;; run the previous failed tests first
     ;;"--maxfail=5"))    ;; exit in 5 continuous failures in a run
+
+
+
+(when (executable-find "ipython")
+(setq python-shell-interpreter "ipython"))
+(setq python-shell-interpreter-args "--simple-prompt -i")
+(setq python-shell-unbuffered nil)
+(setq python-shell-prompt-detect-failure-warning nil)
+(setq python-shell-prompt-detect-enabled nil)
