@@ -1,0 +1,57 @@
+#+TITLE: Setting up computer
+
+* Clone vault repo with packages
+
+#+BEGIN_SRC bash :results output
+git clone https://github.com/beng/vault.git ~/Documents/code/vault
+#+END_SRC
+
+#+RESULTS:
+
+
+* Install packages
+** Install doom-emacs
+#+BEGIN_SRC bash :results output
+git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+
+~/.emacs.d/bin/doom install
+#+END_SRC
+
+** OS X
+
+#+BEGIN_SRC bash :results output
+
+# install brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+brew update
+
+packages=(reattach-to-user-namespace \
+    ag \
+    coreutils)
+
+brew install \
+    reattach-to-user-namespace \
+    ag \
+    coreutils
+
+brew tap caskroom/fonts
+
+brew cask install \
+    font-hack \
+    iterm2 \
+    # window manager
+    rectangle
+
+#+END_SRC
+
+* Install pyenv
+
+** OS X
+
+#+BEGIN_SRC bash :results output
+brew install pyenv
+#+END_SRC
+
+
+
