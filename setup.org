@@ -1,9 +1,18 @@
 #+TITLE: Setting up computer
 
+* Install updated emacs
+#+BEGIN_SRC bash :results output
+brew tap d12frosted/emacs-plus
+brew install emacs-plus@28 --with-ctags --with-debug
+#+END_SRC
 * Clone vault repo with packages
 
 #+BEGIN_SRC bash :results output
 git clone https://github.com/beng/vault.git ~/Documents/code/vault
+
+ln -S $(pwd)/Documents/code/vault/config/emacs/doom/.doom.d/ ~/.doom.d
+
+ln -S $(pwd)/Documents/code/vault/config/emacs/doom/.emacs.d ~/.emacs.d
 #+END_SRC
 
 #+RESULTS:
@@ -33,7 +42,8 @@ packages=(reattach-to-user-namespace \
 brew install \
     reattach-to-user-namespace \
     ag \
-    coreutils
+    coreutils \
+    ripgrep
 
 brew tap caskroom/fonts
 
