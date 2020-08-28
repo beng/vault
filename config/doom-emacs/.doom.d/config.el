@@ -16,7 +16,7 @@
 ;; + `doom-variable-pitch-font'
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-(setq doom-font (font-spec :family "Hack" :size 14)
+(setq doom-font (font-spec :family "Hack" :size 12)
       doom-big-font (font-spec :family "Hack" :size 24)
       doom-big-font-increment 5
       doom-variable-pitch-font (font-spec :family "Hack")
@@ -86,6 +86,25 @@
 ;;   (rust-enable-format-on-save)
 ;;   (map! :map rust-mode-map
 ;;         "C-c C-f" #'rust-format-buffer))
+
+
+(after! lsp-clients
+  (lsp-register-client
+   (make-lsp-client :new-connection
+    (lsp-stdio-connection
+        (expand-file-name
+          "~/Documents/code/elixir-ls/language_server.sh"))
+        :major-modes '(elixir-mode)
+        :priority -1
+        :server-id 'elixir-ls
+        :initialized-fn (lambda (workspace)
+            (with-lsp-workspace workspace
+             (let ((config `(:elixirLS
+                             (:mixEnv "dev"
+                                     :dialyzerEnabled
+                                     :json-false))))
+             (lsp--set-configuration config)))))))
+
 
 (setq flycheck-python-pycompile-executable "python3")
 

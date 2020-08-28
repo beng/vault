@@ -19,6 +19,11 @@ ln -S $(pwd)/Documents/code/vault/config/emacs/doom/.emacs.d ~/.emacs.d
 
 
 * Install packages
+** Install elixir language server
+#+BEGIN_SRC bash :results output
+git clone git@github.com:elixir-lsp/elixir-ls.git ~/Documents/code/elixir-ls
+#+END_SRC
+
 ** Install doom-emacs
 #+BEGIN_SRC bash :results output
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
@@ -63,5 +68,11 @@ brew cask install \
 brew install pyenv
 #+END_SRC
 
+* Configure packages
 
+** Rectangle
 
+#+BEGIN_SRC bash :results output
+defaults write com.knollsoft.Rectangle gapSize -float 10
+defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 2
+#+END_SRC
