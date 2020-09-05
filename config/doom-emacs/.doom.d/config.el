@@ -40,10 +40,6 @@
 (setq display-line-numbers-type t)
 
 
-;; Remap esc to jj
-(setq evil-escape-key-sequence "jj")
-
-
 ;; Python virtual env
 ;; (use-package pyvenv
 ;;   :ensure t
@@ -129,6 +125,8 @@
   (setq shell-command-switch "-lc")))
 
 
+;; insert timestamp when status set to closed in org mode
+(setq org-log-done 'time)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
