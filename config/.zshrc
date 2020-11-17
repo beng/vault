@@ -134,3 +134,6 @@ if [ -f ~/.enigma ]; then
 fi
 
 source ~/.bashrc
+export PATH="/usr/local/opt/terraform@0.11/bin:$PATH"
+# https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr/52230415#52230415
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES

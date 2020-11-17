@@ -1,13 +1,12 @@
 * Mappings
 
+https://kinesis-ergo.com/support/advantage2/
 
-  | Source Key | Destination Key |
-  |------------+-----------------|
-  | Cmd        | Delete          |
-  | Left Ctrl  | Caps Lock       |
-  | Left Alt   | Left Ctrl       |
-  | Caps Lock  | Left Ctrl       | Physicallly moved keys
-  | Tilde      | Home            | Physicallly moved keys
-  | +=         | End             |
-
-
+  | Source Key | Destination Key |                        |
+  |------------+-----------------+------------------------|
+  | Cmd        | Delete          |                        |
+  | Left Ctrl  | Caps Lock       |                        |
+  | Left Alt   | Left Ctrl       |                        |
+  | Caps Lock  | Left Ctrl       | Physicallly moved keys |
+  | Tilde      | Home            | Physicallly moved keys |
+  | +=         | End             |                        |

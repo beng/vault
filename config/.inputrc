@@ -3,7 +3,7 @@ set editing-mode vi
 
 # any bindings listed after that point apply to that keymap
 set keymap vi-command
-bindkey jj vi-cmd-mode
+bindkey jk vi-cmd-mode
 
 # fixes issue with sbt because jj is not supported on readline
 set keymap vi-insert

@@ -48,7 +48,9 @@ brew install \
     reattach-to-user-namespace \
     ag \
     coreutils \
-    ripgrep
+    ripgrep \
+    pyenv \
+    virtualenv
 
 brew tap caskroom/fonts
 
@@ -73,6 +75,6 @@ brew install pyenv
 ** Rectangle
 
 #+BEGIN_SRC bash :results output
-defaults write com.knollsoft.Rectangle gapSize -float 10
+defaults write com.knollsoft.Rectangle gapSize -float 2.5
 defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 2
 #+END_SRC
