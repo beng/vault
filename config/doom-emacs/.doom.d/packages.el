@@ -50,3 +50,4 @@
 ;(unpin! t)
 
 (package! cargo)
+(package! exec-path-from-shell)

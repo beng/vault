@@ -16,7 +16,7 @@
 ;; + `doom-variable-pitch-font'
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-(setq doom-font (font-spec :family "Hack" :size 12)
+(setq doom-font (font-spec :family "Hack" :size 14)
       doom-big-font (font-spec :family "Hack" :size 24)
       doom-big-font-increment 5
       doom-variable-pitch-font (font-spec :family "Hack")
@@ -35,18 +35,12 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Documents/org/")
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
-
-
 ;; Python virtual env
 ;; (use-package pyvenv
 ;;   :ensure t
 ;;   :config
 ;;   (setenv "WORKON_HOME" "~/.pyenv/versions")
 ;;   (pyvenv-mode 1))
-
 
 (after! python
   (when (executable-find "ipython")
@@ -124,9 +118,14 @@
   ;; Invoke login shells, so that .profile or .bash_profile is read
   (setq shell-command-switch "-lc")))
 
+;; use relative line numbering
+(setq display-line-numbers-type 'relative)
 
 ;; insert timestamp when status set to closed in org mode
 (setq org-log-done 'time)
+
+(after! evil
+  (setq key-chord-two-keys-delay .03))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
