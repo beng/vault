@@ -50,7 +50,10 @@ brew install \
     coreutils \
     ripgrep \
     pyenv \
-    virtualenv
+    virtualenv \
+    cmake \
+    # handle issue with doomemacs html formatting
+    tidy-html5
 
 brew tap caskroom/fonts
 
@@ -77,4 +80,22 @@ brew install pyenv
 #+BEGIN_SRC bash :results output
 defaults write com.knollsoft.Rectangle gapSize -float 2.5
 defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 2
+#+END_SRC
+
+
+* Install LSP for GoLang
+
+#+BEGIN_SRC bash :results output
+GO111MODULE=on go get golang.org/x/tools/gopls@latest
+#+END_SRC
+
+* Install Rust
+
+Rust analyzer required for lsp to work correctly
+https://rust-analyzer.github.io/manual.html#rust-analyzer-language-server-binary
+
+
+#+BEGIN_SRC bash :results output
+curl https://sh.rustup.rs -sSf | sh
+rustup component add rls rust-analysis rust-src clippy
 #+END_SRC

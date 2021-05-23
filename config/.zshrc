@@ -93,47 +93,56 @@ resolve() {
     host $1 | awk '{ print $4  }' | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn} -v 'in' | xargs -I {} dig +short -x {}
 }
 
+install_or_update_python_tools() {
+     pip install -U pip flake8 pytest nose pyls-black black pyflakes isort rope jedi importmagic "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
+     #pip install -U pip flake8 pytest nose black pyflakes isort rope jedi importmagic autopep8 "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
+}
+ 
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH="/Users/sesshin/.oh-my-zsh"
 
-ZSH_THEME="minimal"
+# needs to load before the source oh-my-zsh.sh
+ZSH_THEME="eastwood"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
-plugins=(history-substring-search colored-man-pages)
 
 source $ZSH/oh-my-zsh.sh
+source ~/.inputrc
 
-export PATH="$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/opt/X11/bin:/usr/texbin:/usr/local/terraform-0.8.6"
+plugins=(history-substring-search colored-man-pages)
+
+export PATH="$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/opt/X11/bin:/usr/texbin"
 export PATH=/usr/local/bin:$PATH
+export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+
+
+# golang setup
+export GOPATH="${HOME}/go"
+export GOROOT="/usr/local/opt/go/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+export PATH="/usr/local/sbin:$PATH"
 
 alias pgstart="postgres -D /usr/local/var/postgres"
-alias pys="python -m SimpleHTTPServer"
 alias ip="ipython"
 alias pss="ps aux | grep -i $1"
 alias pup="pip install -U pip"
+alias lsl="ls -l"
+alias lsal="ls -al"
+alias tidy=/usr/local/bin/tidy
 
-# OPAM configuration
-#. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
-# node6 bs
-#export PATH="/usr/local/opt/node@6/bin:$PATH"
-
-# pyenv setup
-#if command -v pyenv 1>/dev/null 2>&1; then
-#    eval "$(pyenv init -)"
-#fi
-#if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
-#export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-
-source ~/.inputrc
-
-#export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
-
-if [ -f ~/.enigma ]; then
-    source ~/.enigma
-fi
-
-source ~/.bashrc
-export PATH="/usr/local/opt/terraform@0.11/bin:$PATH"
 # https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr/52230415#52230415
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+
+source "$HOME/.cargo/env"
+

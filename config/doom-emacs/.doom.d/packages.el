@@ -54,3 +54,8 @@
 
 ;; disable hl-line because its making scrolling very slow on os x
 (package! hl-line :disable t)
+
+(package! good-scroll :recipe (:host github
+                               :repo "io12/good-scroll.el"))
+
+

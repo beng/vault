@@ -1,13 +1,30 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;; Here are some additional functions/macros that could help you configure Doom:
+;;
+;; - `load!' for loading external *.el files relative to this one
+;; - `use-package!' for configuring packages
+;; - `after!' for running code after a package has loaded
+;; - `add-load-path!' for adding directories to the `load-path', relative to
+;;   this file. Emacs searches the `load-path' when you load packages with
+;;   `require' or `use-package'.
+;; - `map!' for binding new keys
+;;
+;; To get information about any of these functions/macros, move the cursor over
+;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+;; This will open documentation for it, including demos of how they are used.
+;;
+;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+;; they are implemented.
+
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "Benjamin Gelb"
-      user-mail-address "ben@inviam.io")
+(setq user-full-name ""
+      user-mail-address "")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -35,6 +52,8 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Documents/org/")
 
+(after! good-scroll
+  (good-scroll-mode 1))
 
 (after! python
   (when (executable-find "ipython")
@@ -74,24 +93,6 @@
                  "C-c C-f" #'rust-format-buffer))
 
 
-;; (after! lsp-clients
-;;   (lsp-register-client
-;;    (make-lsp-client :new-connection
-;;     (lsp-stdio-connection
-;;         (expand-file-name
-;;           "~/Documents/code/elixir-ls/language_server.sh"))
-;;         :major-modes '(elixir-mode)
-;;         :priority -1
-;;         :server-id 'elixir-ls
-;;         :initialized-fn (lambda (workspace)
-;;             (with-lsp-workspace workspace
-;;              (let ((config `(:elixirLS
-;;                              (:mixEnv "dev"
-;;                                      :dialyzerEnabled
-;;                                      :json-false))))
-;;              (lsp--set-configuration config)))))))
-
-
 (setq flycheck-python-pycompile-executable "python3")
 
 ;; display of certain characters and control codes to UTF-8
@@ -114,7 +115,8 @@
   ;; Invoke login shells, so that .profile or .bash_profile is read
   (setq shell-command-switch "-lc")))
 
-;; use relative line numbering
+;; disable line numbering. scrolling is very slow on a big monitor
+;; and disabling line numbering has been a way to reduce lag
 (setq display-line-numbers-type nil)
 
 ;; insert timestamp when status set to closed in org mode
@@ -124,7 +126,12 @@
   (setq key-chord-two-keys-delay .03))
 
 (after! company
-  (setq company-idle-delay 0.2))
+  (setq company-idle-delay 0.1
+        company-minimum-prefix-length 2
+        ;;company-dabbrev-downcase nil
+        company-tooltip-limit 20
+        company-tooltip-minimum-width 15
+        company-tooltip-align-annotations t))
 
 
 ;; https://github.com/hlissner/doom-emacs/issues/4320
@@ -141,8 +148,12 @@
 (setq inhibit-compacting-font-caches t)
 
 ;; https://github.com/hlissner/doom-emacs/issues/4106
-(setq-hook! 'web-mode-hook +format-with 'prettier-prettify)
+;;(setq-hook! 'web-mode-hook +format-with 'prettier-prettify)
 
+;; reduce delay to show leader popup when pressing SPC
+;; https://github.com/hlissner/doom-emacs/issues/1839
+(require 'which-key)
+(setq which-key-idle-delay 0.1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; aliases
@@ -153,21 +164,3 @@
                                         ; alias find-file to ff
 (defun eshell/ff (&rest args)
   (apply #'find-file args))
-
-
-;; Here are some additional functions/macros that could help you configure Doom:
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.

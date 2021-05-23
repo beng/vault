@@ -179,8 +179,3 @@
        ;;literate
        (default +bindings +smartparens))
 
-;; (use-package hl-line+
-;;   :load-path "3rd-party"
-;;   :config
-;;   (hl-line-when-idle-interval 0.3)
-;;   (toggle-hl-line-when-idle 1))
