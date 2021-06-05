@@ -53,7 +53,8 @@ brew install \
     virtualenv \
     cmake \
     # handle issue with doomemacs html formatting
-    tidy-html5
+    tidy-html5 \
+    shellcheck
 
 brew tap caskroom/fonts
 
@@ -65,17 +66,17 @@ brew cask install \
 
 #+END_SRC
 
-* Install pyenv
+** Install pyenv
 
-** OS X
+*** OS X
 
 #+BEGIN_SRC bash :results output
 brew install pyenv
 #+END_SRC
 
-* Configure packages
+** Configure packages
 
-** Rectangle
+*** Rectangle
 
 #+BEGIN_SRC bash :results output
 defaults write com.knollsoft.Rectangle gapSize -float 2.5
@@ -83,13 +84,13 @@ defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 2
 #+END_SRC
 
 
-* Install LSP for GoLang
+** Install LSP for GoLang
 
 #+BEGIN_SRC bash :results output
 GO111MODULE=on go get golang.org/x/tools/gopls@latest
 #+END_SRC
 
-* Install Rust
+** Install Rust
 
 Rust analyzer required for lsp to work correctly
 https://rust-analyzer.github.io/manual.html#rust-analyzer-language-server-binary
@@ -98,4 +99,16 @@ https://rust-analyzer.github.io/manual.html#rust-analyzer-language-server-binary
 #+BEGIN_SRC bash :results output
 curl https://sh.rustup.rs -sSf | sh
 rustup component add rls rust-analysis rust-src clippy
+#+END_SRC
+
+** Install LSP for bash
+
+#+BEGIN_SRC bash :results output
+npm i -g bash-language-server
+#+END_SRC
+
+** Install zsh-vi-mode
+#+BEGIN_SRC bash :results output
+git clone https://github.com/jeffreytse/zsh-vi-mode \
+  $ZSH/custom/plugins/zsh-vi-mode
 #+END_SRC

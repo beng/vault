@@ -1,11 +1,1 @@
 set blink-matching-paren on
-set editing-mode vi
-set show-mode-in-prompt on
- 
-# any bindings listed after that point apply to that keymap
-set keymap vi-command
-bindkey jk vi-cmd-mode
-
-# fixes issue with sbt because jj is not supported on readline
-set keymap vi-insert
-

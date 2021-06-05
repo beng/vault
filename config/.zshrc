@@ -1,3 +1,16 @@
+# -*- mode: sh -*-
+
+function zvm_before_init() {
+    # fixes issue with zsh-autosuggestions no longer
+    # working in `zsh-vi-mode`
+    #
+    # https://github.com/jeffreytse/zsh-vi-mode/issues/15#issuecomment-790243410
+    zvm_bindkey viins '^[[A' history-beginning-search-backward
+    zvm_bindkey viins '^[[B' history-beginning-search-forward
+    zvm_bindkey vicmd '^[[A' history-beginning-search-backward
+    zvm_bindkey vicmd '^[[B' history-beginning-search-forward
+}
+
 vterm_printf(){
     # Some of the most useful features in vterm
     # (e.g., directory-tracking and prompt-tracking or message passing)
@@ -110,10 +123,10 @@ ZSH_THEME="eastwood"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
 
+plugins=(zsh-vi-mode history-substring-search colored-man-pages)
 source $ZSH/oh-my-zsh.sh
 source ~/.inputrc
 
-plugins=(history-substring-search colored-man-pages)
 
 export PATH="$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/opt/X11/bin:/usr/texbin"
 export PATH=/usr/local/bin:$PATH
@@ -149,4 +162,4 @@ fi
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 source "$HOME/.cargo/env"
-
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk

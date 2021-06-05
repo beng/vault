@@ -115,7 +115,7 @@
 
 
 (add-hook 'term-exec-hook 'my-term-use-utf8)
-;;
+
 ;; fixes issue with PATH and env vars not being
 ;; inherited correctly
 (when (memq window-system '(mac ns x))
@@ -148,9 +148,14 @@
         company-tooltip-align-annotations t))
 
 
+(after! sh
+  (add-to-list 'auto-mode-alist '("\\.zshrc\\'" . sh-mode))
+  (add-to-list 'auto-mode-alist '("\\.bashrc\\'" . sh-mode)))
+
 ;; https://github.com/hlissner/doom-emacs/issues/4320
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 
+;; https://github.com/akermu/emacs-libvterm/issues/313
 (setq evil-insert-state-cursor '(bar "#00FF00")
       evil-visual-state-cursor '(box "#FF00FF")
       evil-normal-state-cursor '(box "#E2E8EF"))
