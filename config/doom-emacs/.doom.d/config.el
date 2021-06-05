@@ -177,12 +177,6 @@
 (setq window-divider-default-bottom-width 2
       window-divider-default-right-width 2)
 
-;;;;;;;;;;;;;;;;;;;;;;;
-;; aliases
-;;;;;;;;;;;;;;;;;;;;;;;
-
-(defalias 'ls "ls -alhtr $1")
-
 ; alias find-file to ff
 (defun eshell/ff (&rest args)
   (apply #'find-file args))
