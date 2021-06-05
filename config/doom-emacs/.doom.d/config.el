@@ -33,11 +33,12 @@
 ;; + `doom-variable-pitch-font'
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-(setq doom-font (font-spec :family "Monaco" :size 14)
-      doom-big-font (font-spec :family "Monaco" :size 24)
+(setq doom-font (font-spec :family "Hack" :size 14)
+      doom-big-font (font-spec :family "Hack" :size 24)
       doom-big-font-increment 5
-      doom-variable-pitch-font (font-spec :family "Monaco")
-      doom-unicode-font (font-spec :family "Monaco"))
+      doom-variable-pitch-font (font-spec :family "Hack")
+      doom-unicode-font (font-spec :family "Hack"))
+
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
@@ -55,21 +56,35 @@
 (after! good-scroll
   (good-scroll-mode 1))
 
-(after! python
-  (when (executable-find "ipython")
-    (setq python-shell-interpreter "ipython"))
-  (setenv "WORKON_HOME" "~/.pyenv/versions")
 
+(after! python
+  (setenv "WORKON_HOME" "~/.pyenv/versions")
   (setq python-indent-offset 4
+        python-shell-interpreter "ipython3"
+        python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True"
         python-shell-prompt-detect-enabled nil
-        python-shell-interpreter-args "--simple-prompt -i"
-        python-shell-unbuffered nil
         python-shell-prompt-detect-failure-warning nil
         flycheck-python-pylint-executable "pylint"
         flycheck-python-flake8-executable "flake8"
-        flycheck-highlighting-mode "lines")
-  (setq-hook! 'python-mode-hook +format-with-lsp nil)
-  (set-formatter! 'python-mode "black -q" ))
+        flycheck-highlighting-mode "lines"
+        flycheck-python-pycompile-executable "python3")
+
+    ;; not sure if it's better to enable use this package or to use
+    ;; (set-formatter!) like i previously was like so:
+    ;;     (setq-hook! 'python-mode-hook +format-with-lsp nil)
+    ;;     (set-formatter! 'python-mode "black -q" ))
+
+  ;; https://gist.github.com/jordangarrison/8720cf98126a1a64890b2f18c1bc69f5
+  (use-package! python-black
+    :demand t
+    :hook (python-mode . python-black-on-save-mode)
+    :config
+        ;;(set-formatter! 'python-mode #'python-black-buffer)
+        (map! :leader :desc "Blacken Buffer" "m b b" #'python-black-buffer)
+        (map! :leader :desc "Blacken Region" "m b r" #'python-black-region)
+        (map! :leader :desc "Blacken Statement" "m b s" #'python-black-statement)))
+
+
 
 (after! rustic
   ;;(setq rustic-format-on-save t)
@@ -93,7 +108,6 @@
                  "C-c C-f" #'rust-format-buffer))
 
 
-(setq flycheck-python-pycompile-executable "python3")
 
 ;; display of certain characters and control codes to UTF-8
 (defun my-term-use-utf8 ()
@@ -154,6 +168,9 @@
 ;; https://github.com/hlissner/doom-emacs/issues/1839
 (require 'which-key)
 (setq which-key-idle-delay 0.1)
+
+(setq window-divider-default-bottom-width 2
+      window-divider-default-right-width 2)
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; aliases

@@ -51,6 +51,7 @@
 
 (package! cargo)
 (package! exec-path-from-shell)
+(package! python-black)
 
 ;; disable hl-line because its making scrolling very slow on os x
 (package! hl-line :disable t)

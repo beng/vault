@@ -93,9 +93,13 @@ resolve() {
     host $1 | awk '{ print $4  }' | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn} -v 'in' | xargs -I {} dig +short -x {}
 }
 
-install_or_update_python_tools() {
-     pip install -U pip flake8 pytest nose pyls-black black pyflakes isort rope jedi importmagic "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
-     #pip install -U pip flake8 pytest nose black pyflakes isort rope jedi importmagic autopep8 "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
+install_or_update_python_ide_libs() {
+	#flake8 
+	#black 
+	#jedi 
+	#isort 
+	#pyls-black 
+     pip install -U pip ipython flake8 black isort pytest nose pyflakes rope importmagic pyls-flake8 pyls-black pyls-isort "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
 }
  
 # Path to your oh-my-zsh installation.
