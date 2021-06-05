@@ -33,11 +33,11 @@
 ;; + `doom-variable-pitch-font'
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-(setq doom-font (font-spec :family "Hack" :size 14)
-      doom-big-font (font-spec :family "Hack" :size 24)
+(setq doom-font (font-spec :family "Monaco" :size 14)
+      doom-big-font (font-spec :family "Monaco" :size 24)
       doom-big-font-increment 5
-      doom-variable-pitch-font (font-spec :family "Hack")
-      doom-unicode-font (font-spec :family "Hack"))
+      doom-variable-pitch-font (font-spec :family "Monaco")
+      doom-unicode-font (font-spec :family "Monaco"))
 
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
@@ -162,7 +162,7 @@
 (setq inhibit-compacting-font-caches t)
 
 ;; https://github.com/hlissner/doom-emacs/issues/4106
-;;(setq-hook! 'web-mode-hook +format-with 'prettier-prettify)
+(setq-hook! 'web-mode-hook +format-with 'prettier-prettify)
 
 ;; reduce delay to show leader popup when pressing SPC
 ;; https://github.com/hlissner/doom-emacs/issues/1839
@@ -178,6 +178,6 @@
 
 (defalias 'ls "ls -alhtr $1")
 
-                                        ; alias find-file to ff
+; alias find-file to ff
 (defun eshell/ff (&rest args)
   (apply #'find-file args))
