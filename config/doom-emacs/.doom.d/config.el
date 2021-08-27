@@ -137,7 +137,8 @@
 (setq org-log-done 'time)
 
 (after! evil
-  (setq key-chord-two-keys-delay .03))
+  (setq evil-escape-delay .5)
+  (setq evil-escape-key-sequence "jj"))
 
 (after! company
   (setq company-idle-delay 0.1
