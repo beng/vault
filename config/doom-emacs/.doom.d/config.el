@@ -69,20 +69,20 @@
         flycheck-highlighting-mode "lines"
         flycheck-python-pycompile-executable "python3")
 
-    ;; not sure if it's better to enable use this package or to use
-    ;; (set-formatter!) like i previously was like so:
-    ;;     (setq-hook! 'python-mode-hook +format-with-lsp nil)
-    ;;     (set-formatter! 'python-mode "black -q" ))
+  ;; not sure if it's better to enable use this package or to use
+  ;; (set-formatter!) like i previously was like so:
+  ;;     (setq-hook! 'python-mode-hook +format-with-lsp nil)
+  ;;     (set-formatter! 'python-mode "black -q" ))
 
   ;; https://gist.github.com/jordangarrison/8720cf98126a1a64890b2f18c1bc69f5
   (use-package! python-black
     :demand t
     :hook (python-mode . python-black-on-save-mode)
     :config
-        ;;(set-formatter! 'python-mode #'python-black-buffer)
-        (map! :leader :desc "Blacken Buffer" "m b b" #'python-black-buffer)
-        (map! :leader :desc "Blacken Region" "m b r" #'python-black-region)
-        (map! :leader :desc "Blacken Statement" "m b s" #'python-black-statement)))
+    ;;(set-formatter! 'python-mode #'python-black-buffer)
+    (map! :leader :desc "Blacken Buffer" "m b b" #'python-black-buffer)
+    (map! :leader :desc "Blacken Region" "m b r" #'python-black-region)
+    (map! :leader :desc "Blacken Statement" "m b s" #'python-black-statement)))
 
 
 
@@ -141,12 +141,48 @@
   (setq evil-escape-key-sequence "jj"))
 
 (after! company
-  (setq company-idle-delay 0.1
+  (setq company-tooltip-limit 5
+	company-idle-delay 0.05
         company-minimum-prefix-length 2
         ;;company-dabbrev-downcase nil
-        company-tooltip-limit 20
-        company-tooltip-minimum-width 15
+        company-tooltip-minimum-width 80
         company-tooltip-align-annotations t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; BEGIN CUSTOMIZATION BORROWED FROM THIS CONFIG
+;; - https://github.com/Brettm12345/doom-emacs-literate-config/blob/master/config.org#completioncompany
+;; - https://www.soitflows.xyz/posts/my-doom-emacs-configuration/
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; use ripgrep as default for project search
+(setq +ivy-project-search-engines '(rg))
+
+(after! ivy
+  (ivy-add-actions
+   'counsel-M-x
+   `(("h" +ivy/helpful-function "Helpful"))))
+
+
+(after! counsel
+  (setq counsel-evil-registers-height 20
+        counsel-yank-pop-height 20
+        counsel-org-goto-face-style 'org
+        counsel-org-headline-display-style 'title
+        counsel-org-headline-display-tags t
+        counsel-org-headline-display-todo t))
+
+(after! ivy
+  (setq ivy-use-selectable-prompt t
+        ivy-auto-select-single-candidate t
+        ivy-rich-parse-remote-buffer nil
+        +ivy-buffer-icons nil
+        ivy-use-virtual-buffers nil
+        ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-cd-selected
+        ivy-height 20
+        ivy-rich-switch-buffer-name-max-length 50))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; END CUSTOMIZATION BORROWED FROM THIS CONFIG
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (after! sh
@@ -178,8 +214,19 @@
 (setq window-divider-default-bottom-width 2
       window-divider-default-right-width 2)
 
-; alias find-file to ff
-(defun eshell/ff (&rest args)
-  (apply #'find-file args))
+(after! eshell
+  (set-eshell-alias!
+   "ff"   "find-file $1"
+   "l"   "ls -lahtr"
+   "d"   "dired $1"
+   "gl"  "(call-interactively 'magit-log-current)"
+   "gs"  "magit-status"
+   "rg"  "rg --color=always $*"))
+;; (defun eshell/ff (&rest args)
+;;   (apply #'find-file args))
 
 (setq lsp-eslint-auto-fix-on-save t)
+
+;; set cursor shape in iterm/terminal to indicate inser/normal
+;; mode for evil mode
+(global-term-cursor-mode)

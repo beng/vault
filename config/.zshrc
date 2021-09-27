@@ -1,15 +1,15 @@
 # -*- mode: sh -*-
 
-function zvm_before_init() {
-    # fixes issue with zsh-autosuggestions no longer
-    # working in `zsh-vi-mode`
-    #
-    # https://github.com/jeffreytse/zsh-vi-mode/issues/15#issuecomment-790243410
-    zvm_bindkey viins '^[[A' history-beginning-search-backward
-    zvm_bindkey viins '^[[B' history-beginning-search-forward
-    zvm_bindkey vicmd '^[[A' history-beginning-search-backward
-    zvm_bindkey vicmd '^[[B' history-beginning-search-forward
-}
+# function zvm_before_init() {
+#     # fixes issue with zsh-autosuggestions no longer
+#     # working in `zsh-vi-mode`
+#     #
+#     # https://github.com/jeffreytse/zsh-vi-mode/issues/15#issuecomment-790243410
+#     zvm_bindkey viins '^[[A' history-beginning-search-backward
+#     zvm_bindkey viins '^[[B' history-beginning-search-forward
+#     zvm_bindkey vicmd '^[[A' history-beginning-search-backward
+#     zvm_bindkey vicmd '^[[B' history-beginning-search-forward
+# }
 
 vterm_printf(){
     # Some of the most useful features in vterm
@@ -123,9 +123,16 @@ ZSH_THEME="eastwood"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
 
-plugins=(zsh-vi-mode history-substring-search colored-man-pages)
+#plugins=(zsh-vi-mode history-substring-search colored-man-pages)
+plugins=(history-substring-search colored-man-pages pyenv)
 source $ZSH/oh-my-zsh.sh
 source ~/.inputrc
+
+# https://github.com/syl20bnr/spacemacs/wiki/Terminal
+export TERM=xterm-24bit
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
 
 
 export PATH="$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/opt/X11/bin:/usr/texbin"
@@ -147,19 +154,28 @@ alias pup="pip install -U pip"
 alias lsl="ls -l"
 alias lsal="ls -al"
 alias tidy=/usr/local/bin/tidy
+alias emacsdaemon="emacs --daemon"
+
 
 # https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr/52230415#52230415
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
+#export PYENV_ROOT="$HOME/.pyenv"
+#export PATH="$PYENV_ROOT/bin:$PATH"
+#export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+eval "$(pyenv init --path)"
 
 if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
+  eval "$(pyenv init --path)"
 fi
 
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+#if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 source "$HOME/.cargo/env"
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+#ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+
+ZSH_PYENV_VIRTUALENV=true
+

@@ -112,3 +112,15 @@ npm i -g bash-language-server
 git clone https://github.com/jeffreytse/zsh-vi-mode \
   $ZSH/custom/plugins/zsh-vi-mode
 #+END_SRC
+
+** Setup 24 bit/true color for iterm2
+directions found here https://github.com/syl20bnr/spacemacs/wiki/Terminal
+1) symlink $(pwd)/config/xterm-24bit.terminfo to ~/xterm-24bit.terminfo
+2) `/usr/bin/tic -x -o ~/.terminfo xterm-24bit.terminfo`
+3) export TERM=xterm-24bit (this is already in zshrc)
+4) make sure to export utf8 lang variables (this is already in zshrc)
+   ```
+    export LC_ALL=en_US.UTF-8
+    export LANG=en_US.UTF-8
+    export LANGUAGE=en_US.UTF-8
+    ```

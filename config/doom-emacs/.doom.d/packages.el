@@ -52,11 +52,17 @@
 (package! cargo)
 (package! exec-path-from-shell)
 (package! python-black)
+(package! term-cursor
+  :recipe (
+           :host github
+           :repo "h0d/term-cursor.el"))
+
+;;(package! clipetty )
 
 ;; disable hl-line because its making scrolling very slow on os x
 (package! hl-line :disable t)
 
-(package! good-scroll :recipe (:host github
-                               :repo "io12/good-scroll.el"))
-
-
+(package! good-scroll
+  :recipe (
+           :host github
+           :repo "io12/good-scroll.el"))
