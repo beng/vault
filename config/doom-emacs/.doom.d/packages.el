@@ -57,11 +57,6 @@
            :host github
            :repo "h0d/term-cursor.el"))
 
-;;(package! clipetty )
-
-;; disable hl-line because its making scrolling very slow on os x
-(package! hl-line :disable t)
-
 (package! good-scroll
   :recipe (
            :host github
