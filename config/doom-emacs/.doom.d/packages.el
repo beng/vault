@@ -52,6 +52,7 @@
 (package! cargo)
 (package! exec-path-from-shell)
 (package! python-black)
+(package! org-superstar)
 (package! term-cursor
   :recipe (
            :host github

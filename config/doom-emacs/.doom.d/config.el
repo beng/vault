@@ -30,7 +30,7 @@
 ;; are the three important ones:
 ;;
 ;; + `doom-font'
-;; + `doom-variable-pitch-font'
+;; + `doom-variable-pitch-font[[id:0ad36096-ab7c-464a-8ca1-4b601d8761e2][test]]'
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
 (setq doom-font (font-spec :family "Monaco" :size 14)
@@ -47,15 +47,31 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-vibrant)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/org/")
+(setq org-directory "~/Documents/notes/org/")
+(setq org-roam-directory "~/Documents/notes")
+
+(setq
+ ;; set undo limit to 10mb
+ undo-limit 10000000
+ ;; By default while in insert all changes are one big blob. Be more granular
+ evil-want-fine-undo t
+ auto-save-default t)
+
+(unless (string-match-p "^Power N/A" (battery))
+  (display-battery-mode 1))
+
+;; iterate through CamelCase words
+(global-subword-mode 1)
+
+;; new buffers open in org mode rather than fundamental mode
+(setq-default major-mode 'org-mode)
 
 (after! good-scroll
   (good-scroll-mode 1))
-
 
 (after! python
   (setenv "WORKON_HOME" "~/.pyenv/versions")
@@ -134,7 +150,9 @@
 (setq display-line-numbers-type nil)
 
 ;; insert timestamp when status set to closed in org mode
-(setq org-log-done 'time)
+(setq org-log-done 'time
+      ;; hide * * for bold // for italics, etc
+      org-hide-emphasis-markers t)
 
 (after! evil
   (setq evil-escape-delay .5)
@@ -222,11 +240,32 @@
    "gl"  "(call-interactively 'magit-log-current)"
    "gs"  "magit-status"
    "rg"  "rg --color=always $*"))
-;; (defun eshell/ff (&rest args)
-;;   (apply #'find-file args))
 
 (setq lsp-eslint-auto-fix-on-save t)
 
 ;; set cursor shape in iterm/terminal to indicate inser/normal
 ;; mode for evil mode
 (global-term-cursor-mode)
+
+(after! org
+  (add-hook! 'org-mode-hook #'org-superstar-mode)
+  (setq org-superstar-prettify-item-bullets t )
+
+  ;; Increase the size of various headings
+  (dolist (face '((org-level-1 . 2.0)
+                  (org-level-2 . 1.5)
+                  (org-level-3 . 1.2)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1))))
+
+  ;; type shortcut, eg `<sh' and then hit Tab to expand the template
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("shell" . "src sh"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("python" . "src python"))
+  (add-to-list 'org-structure-template-alist '("golang" . "src go"))
+  (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
+  (add-to-list 'org-structure-template-alist '("json" . "src json")))
