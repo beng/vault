@@ -107,14 +107,14 @@ resolve() {
 }
 
 install_or_update_python_ide_libs() {
-	#flake8 
-	#black 
-	#jedi 
-	#isort 
-	#pyls-black 
+	#flake8
+	#black
+	#jedi
+	#isort
+	#pyls-black
      pip install -U pip ipython flake8 black isort pytest nose pyflakes rope importmagic pyls-flake8 pyls-black pyls-isort "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
 }
- 
+
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/sesshin/.oh-my-zsh"
 
@@ -124,7 +124,7 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
 
 #plugins=(zsh-vi-mode history-substring-search colored-man-pages)
-plugins=(history-substring-search colored-man-pages pyenv)
+plugins=(history-substring-search colored-man-pages )
 source $ZSH/oh-my-zsh.sh
 source ~/.inputrc
 
@@ -156,6 +156,9 @@ alias lsal="ls -al"
 alias tidy=/usr/local/bin/tidy
 alias emacsdaemon="emacs --daemon"
 
+# shell is using 24bit color which breaks SSH sessions, this will
+# set the TERM when sshing into a server
+alias ssh='TERM="xterm-256color" ssh'
 
 # https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr/52230415#52230415
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
@@ -172,10 +175,11 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init --path)"
 fi
 
-#if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+
 
 source "$HOME/.cargo/env"
 #ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 
 ZSH_PYENV_VIRTUALENV=true
-
+ZSH_THEME_TERM_TITLE_IDLE="%3~"
+ZSH_THEME_TERM_TAB_TITLE_IDLE="%3~"
