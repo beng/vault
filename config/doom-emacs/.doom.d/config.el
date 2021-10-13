@@ -52,7 +52,6 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Documents/notes/org/")
-(setq org-roam-directory "~/Documents/notes")
 
 (setq
  ;; set undo limit to 10mb
@@ -109,6 +108,19 @@
 (after! cargo
   (setq cargo-process--custom-path-to-bin "~/.cargo/bin/cargo"))
 
+
+;; TODO: this isnt loading correctly, only way
+;; to make it work is to load it globally, not working
+;; when i use ( after! prettier )
+;;(add-hook 'after-init-hook #'global-prettier-mode)
+(add-hook 'after-init-hook #'global-prettier-mode)
+(add-hook 'web-mode-hook #'prettier-mode)
+(add-hook 'css-mode-hook #'prettier-mode)
+(add-hook 'typescript-mode-hook #'prettier-mode)
+;; (after! prettier
+;;   (add-hook 'after-init-hook #'global-prettier-mode))
+;;(add-hook! (global-prettier-mode)))
+
 (after! rust
   ;;(setq rust-format-on-save t)
   (add-hook! :after rust-mode-hook #'lsp))
@@ -164,7 +176,8 @@
         company-minimum-prefix-length 2
         ;;company-dabbrev-downcase nil
         company-tooltip-minimum-width 80
-        company-tooltip-align-annotations t))
+        company-tooltip-align-annotations t)
+  (add-to-list 'company-backends 'company-capf))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; BEGIN CUSTOMIZATION BORROWED FROM THIS CONFIG
@@ -247,20 +260,17 @@
 ;; mode for evil mode
 (global-term-cursor-mode)
 
+;; (after! deft
+;;   (setq deft-directory "~/Documents/notes/org-roam"
+;;         deft-recursive t
+;;         deft-use-filename-as-title nil
+;;         deft-use-filter-string-for-filename t
+;;         deft-extensions '("md" "txt" "org")
+;;        deft-default-extension "org"))
+
 (after! org
-  (add-hook! 'org-mode-hook #'org-superstar-mode)
-  (setq org-superstar-prettify-item-bullets t )
-
-  ;; Increase the size of various headings
-  (dolist (face '((org-level-1 . 2.0)
-                  (org-level-2 . 1.5)
-                  (org-level-3 . 1.2)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1))))
-
+  ;; (add-hook! 'org-mode-hook #'org-superstar-mode)
+  ;; (setq org-superstar-prettify-item-bullets t )
   ;; type shortcut, eg `<sh' and then hit Tab to expand the template
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("shell" . "src sh"))
@@ -269,3 +279,18 @@
   (add-to-list 'org-structure-template-alist '("golang" . "src go"))
   (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
   (add-to-list 'org-structure-template-alist '("json" . "src json")))
+
+
+(after! org-roam
+  (setq org-roam-completion-system 'ivy-mode
+        org-roam-directory "~/Documents/notes/org-roam"
+        org-roam-capture-templates
+        '(("d" "default" plain
+           "%?"
+           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+           :unnarrowed t)
+          ("l" "programming language" plain
+           "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n* Reference:\n\n"
+           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+           :unnarrowed t)))
+  (org-roam-db-autosync-mode))

@@ -49,7 +49,7 @@
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        ;;window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
-       ;;zen               ; distraction-free coding or writing
+       zen               ; distraction-free coding or writing
 
        :editor
        (evil +everywhere); come to the dark side, we have cookies
@@ -84,7 +84,7 @@
        ;;grammar           ; tasing grammar mistake every you make
 
        :os
-       ;macos             ; MacOS-specific commands
+                                        ;macos             ; MacOS-specific commands
        (tty +osc)          ; https://github.com/hlissner/doom-emacs/blob/develop/modules/os/tty/README.org
 
        :tools
@@ -147,7 +147,9 @@
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org +roam2)               ; organize your plain life in plain text
+       (org                    ; organize your plain life in plain text
+        +pretty                 ;; TODO: if orgmode becomes slow, disable this!!
+        +roam2)
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -183,4 +185,3 @@
        :config
        ;;literate
        (default +bindings +smartparens))
-
