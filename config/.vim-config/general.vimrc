@@ -3,7 +3,7 @@ set shiftwidth=4
 set tabstop=4
 set expandtab
 set clipboard=unnamed
-"colorscheme nord
+colorscheme PaperColor
 set background=dark
 set autoindent
 set t_Co=256

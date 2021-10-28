@@ -8,7 +8,7 @@ endif
 call plug#begin()
 "Plug 'godlygeek/tabular'
 "Plug 'plasticboy/vim-markdown'
-"Plug 'NLKNguyen/papercolor-theme'
+Plug 'NLKNguyen/papercolor-theme'
 "Plug 'avakhov/vim-yaml'
 "Plug 'hdima/python-syntax'
 "Plug 'luochen1990/rainbow'
