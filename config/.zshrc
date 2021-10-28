@@ -167,6 +167,9 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 #export PATH="$PYENV_ROOT/bin:$PATH"
 #export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 
+# loads pdflatex
+eval "$(/usr/libexec/path_helper)"
+
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
@@ -174,8 +177,6 @@ eval "$(pyenv init --path)"
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init --path)"
 fi
-
-
 
 source "$HOME/.cargo/env"
 #ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
