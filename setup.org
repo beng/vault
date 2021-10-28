@@ -10,13 +10,12 @@ brew install emacs-plus@28 --with-ctags --with-debug
 #+BEGIN_SRC bash :results output
 git clone https://github.com/beng/vault.git ~/Documents/code/vault
 
-ln -S $(pwd)/Documents/code/vault/config/emacs/doom/.doom.d/ ~/.doom.d
+ln -s $HOME/Documents/code/vault/config/emacs/doom/.doom.d/ $HOME/.doom.d
 
-ln -S $(pwd)/Documents/code/vault/config/emacs/doom/.emacs.d ~/.emacs.d
+ln -s $HOME/Documents/code/vault/config/emacs/doom/.emacs.d $HOME/.emacs.d
 #+END_SRC
 
 #+RESULTS:
-
 
 * Install packages
 ** Install elixir language server
@@ -124,3 +123,20 @@ directions found here https://github.com/syl20bnr/spacemacs/wiki/Terminal
     export LANG=en_US.UTF-8
     export LANGUAGE=en_US.UTF-8
     ```
+** Install kitty terminal
+https://github.com/kovidgoyal/kitty
+
+#+begin_src bash
+brew intall kitty
+#+end_src
+
+* Symlink Configs
+** Symlink Kitty
+- Kitty terminal https://github.com/kovidgoyal/kitty
+- Kitty search https://github.com/trygveaa/kitty-kitten-search
+
+#+begin_src bash
+ln -s $HOME/Documents/code/vault/config/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
+
+ln -s $HOME/Documents/code/vault/config/kitty/kitty_search $HOME/.config/kitty/kitty_search
+#+end_src
