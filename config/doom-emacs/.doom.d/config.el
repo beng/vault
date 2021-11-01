@@ -60,8 +60,8 @@
  evil-want-fine-undo t
  auto-save-default t)
 
-(unless (string-match-p "^Power N/A" (battery))
-  (display-battery-mode 1))
+;; (unless (string-match-p "^Power N/A" (battery))
+;;   (display-battery-mode 1))
 
 ;; iterate through CamelCase words
 (global-subword-mode 1)
@@ -294,3 +294,9 @@
            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
            :unnarrowed t)))
   (org-roam-db-autosync-mode))
+
+;; org-roam before-hook throws an error and cant sync files to db.
+;; ` (void-function native-comp-available-p)`
+;; see issue below. this is a temp workaround
+;; https://github.com/hlissner/doom-emacs/issues/5706
+(defun native-comp-available-p () nil)
