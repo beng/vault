@@ -63,3 +63,5 @@
            :host github
            :repo "io12/good-scroll.el"))
 (package! prettier)
+
+(package! counsel-tramp)

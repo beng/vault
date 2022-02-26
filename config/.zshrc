@@ -112,7 +112,8 @@ install_or_update_python_ide_libs() {
 	#jedi
 	#isort
 	#pyls-black
-     pip install -U pip ipython flake8 black isort pytest nose pyflakes rope importmagic pyls-flake8 pyls-black pyls-isort "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
+    # pip install -U pip ipython flake8 black isort pytest nose pyflakes rope importmagic pyls-flake8 pyls-black pyls-isort pyright "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
+    pip install -U pip ipython flake8 black isort pytest nose pyflakes rope importmagic pyls-flake8 pyls-black pyls-isort pyright --force-reinstall
 }
 
 # Path to your oh-my-zsh installation.
@@ -184,3 +185,5 @@ source "$HOME/.cargo/env"
 ZSH_PYENV_VIRTUALENV=true
 ZSH_THEME_TERM_TITLE_IDLE="%3~"
 ZSH_THEME_TERM_TAB_TITLE_IDLE="%3~"
+
+#export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home"

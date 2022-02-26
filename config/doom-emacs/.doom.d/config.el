@@ -51,7 +51,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/notes/org/")
+(setq org-directory "~/Documents/org-notes/org/")
 
 (setq
  ;; set undo limit to 10mb
@@ -75,6 +75,7 @@
 (after! python
   (setenv "WORKON_HOME" "~/.pyenv/versions")
   (setq python-indent-offset 4
+        python-indent 4
         python-shell-interpreter "ipython3"
         python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True"
         python-shell-prompt-detect-enabled nil
@@ -113,7 +114,11 @@
 ;; to make it work is to load it globally, not working
 ;; when i use ( after! prettier )
 ;;(add-hook 'after-init-hook #'global-prettier-mode)
-(add-hook 'after-init-hook #'global-prettier-mode)
+;;
+;;BG: 12/08/2021 DISABLED GLOBAL HOOK OF PRETTIER MODE as it was breaking
+;;python indentation. if JS/react starts to break, its because of this!
+;;to fix, renable this!
+;;(add-hook 'after-init-hook #'global-prettier-mode)
 (add-hook 'web-mode-hook #'prettier-mode)
 (add-hook 'css-mode-hook #'prettier-mode)
 (add-hook 'typescript-mode-hook #'prettier-mode)
@@ -231,7 +236,7 @@
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;; add some indentation on left side
-(setq left-margin-width 2)
+(setq left-margin-width 4)
 (setq inhibit-compacting-font-caches t)
 
 ;; https://github.com/hlissner/doom-emacs/issues/4106
@@ -281,22 +286,40 @@
   (add-to-list 'org-structure-template-alist '("json" . "src json")))
 
 
-(after! org-roam
-  (setq org-roam-completion-system 'ivy-mode
-        org-roam-directory "~/Documents/notes/org-roam"
-        org-roam-capture-templates
-        '(("d" "default" plain
-           "%?"
-           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-           :unnarrowed t)
-          ("l" "programming language" plain
-           "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n* Reference:\n\n"
-           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-           :unnarrowed t)))
-  (org-roam-db-autosync-mode))
+;; (after! org-roam
+;;   (setq org-roam-completion-system 'ivy-mode
+;;         org-roam-directory "~/Documents/org-notes/org-roam"
+;;         org-roam-capture-templates
+;;         '(("d" "default" plain
+;;            "%?"
+;;            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+;;            :unnarrowed t)
+;;           ("l" "programming language" plain
+;;            "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n* Reference:\n\n"
+;;            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+;;            :unnarrowed t)))
+;;   (org-roam-db-autosync-mode))
 
 ;; org-roam before-hook throws an error and cant sync files to db.
 ;; ` (void-function native-comp-available-p)`
 ;; see issue below. this is a temp workaround
 ;; https://github.com/hlissner/doom-emacs/issues/5706
 (defun native-comp-available-p () nil)
+
+(after! tramp
+  (setq tramp-inline-compress-start-size 1000)
+  (setq tramp-copy-size-limit 10000)
+  (setq vc-handled-backends '(Git))
+  (setq tramp-default-method "ssh")
+  (setq tramp-use-ssh-controlmaster-options nil)
+  (setq projectile--mode-line "Projectile")
+  (setq tramp-verbose 1))
+
+
+(after! counsel-tramp
+(add-hook 'counsel-tramp-pre-command-hook '(lambda () ;;(global-aggressive-indent-mode 0)
+				     (projectile-mode 0)))
+				     ;;(editorconfig-mode 0)))
+(add-hook 'counsel-tramp-quit-hook '(lambda () ;;(global-aggressive-indent-mode 1)
+			      (projectile-mode 1))))
+			      ;;(editorconfig-mode 1))))
