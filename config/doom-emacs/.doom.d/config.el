@@ -25,7 +25,6 @@
 ;; clients, file templates and snippets.
 (setq user-full-name ""
       user-mail-address "")
-
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
@@ -33,11 +32,11 @@
 ;; + `doom-variable-pitch-font[[id:0ad36096-ab7c-464a-8ca1-4b601d8761e2][test]]'
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-(setq doom-font (font-spec :family "Monaco" :size 14)
-      doom-big-font (font-spec :family "Monaco" :size 24)
+(setq doom-font (font-spec :family "Fira Code Retina" :size 14)
+      doom-big-font (font-spec :family "Fira Code Retina" :size 24)
       doom-big-font-increment 5
-      doom-variable-pitch-font (font-spec :family "Monaco")
-      doom-unicode-font (font-spec :family "Monaco"))
+      doom-variable-pitch-font (font-spec :family "Fira Code Retina")
+      doom-unicode-font (font-spec :family "Fira Code Retina"))
 
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
@@ -47,7 +46,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-vibrant)
+(setq doom-theme 'doom-gruvbox)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -58,7 +57,9 @@
  undo-limit 10000000
  ;; By default while in insert all changes are one big blob. Be more granular
  evil-want-fine-undo t
- auto-save-default t)
+ auto-save-default t
+ line-spacing 3
+ lsp-diagnostics-provider :auto)
 
 ;; (unless (string-match-p "^Power N/A" (battery))
 ;;   (display-battery-mode 1))
@@ -74,6 +75,9 @@
 
 (after! python
   (setenv "WORKON_HOME" "~/.pyenv/versions")
+    (setq flycheck-enabled-checkers '(python-flake8 python-mypy))
+  (setq flycheck-disabled-checkers '(python-pylint))
+  (setq flycheck-python-flake8-executable "flake8")
   (setq python-indent-offset 4
         python-indent 4
         python-shell-interpreter "ipython3"
@@ -164,9 +168,10 @@
 
 ;; disable line numbering. scrolling is very slow on a big monitor
 ;; and disabling line numbering has been a way to reduce lag
-(setq display-line-numbers-type nil)
+(setq display-line-numbers-type 'relative)
 
 ;; insert timestamp when status set to closed in org mode
+;;
 (setq org-log-done 'time
       ;; hide * * for bold // for italics, etc
       org-hide-emphasis-markers t)
@@ -323,3 +328,6 @@
 (add-hook 'counsel-tramp-quit-hook '(lambda () ;;(global-aggressive-indent-mode 1)
 			      (projectile-mode 1))))
 			      ;;(editorconfig-mode 1))))
+
+;; increae line height
+(setq default-text-properties '(line-spacing 0.3 line-height 1.2))
