@@ -1,0 +1,111 @@
+# function zvm_before_init() {
+#     # fixes issue with zsh-autosuggestions no longer
+#     # working in `zsh-vi-mode`
+#     #
+#     # https://github.com/jeffreytse/zsh-vi-mode/issues/15#issuecomment-790243410
+#     zvm_bindkey viins '^[[A' history-beginning-search-backward
+#     zvm_bindkey viins '^[[B' history-beginning-search-forward
+#     zvm_bindkey vicmd '^[[A' history-beginning-search-backward
+#     zvm_bindkey vicmd '^[[B' history-beginning-search-forward
+# }
+
+vterm_printf(){
+    # Some of the most useful features in vterm
+    # (e.g., directory-tracking and prompt-tracking or message passing)
+    # require shell-side configurations. The main goal of these additional
+    # functions is to enable the shell to send information to vterm via properly
+    # escaped sequences. A function that helps in this task, vterm_printf, is defined below.
+    # This function is widely used throughout this readme.
+
+    if [ -n "$TMUX" ]; then
+        # Tell tmux to pass the escape sequences through
+        # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+
+get_ip() {
+    ifconfig en0 | grep "inet " | awk '{print $2}'
+}
+
+open_tunnel() {
+    TUNNEL_NAME=$1
+    TUNNEL_LOCAL_PORT=$2
+    TUNNEL_ADDR=$3
+    TUNNEL_LOGIN=$4
+    ssh -i ~/.ssh/id_rsa -M -S $TUNNEL_NAME-tunnel -fnNT -L 127.0.0.1:$TUNNEL_LOCAL_PORT:$TUNNEL_ADDR -N $TUNNEL_LOGIN
+}
+
+close_tunnel() {
+    TUNNEL_NAME=$1
+    TUNNEL_LOGIN=$2
+    ssh -i ~/.ssh/id_rsa -S $TUNNEL_NAME-tunnel -O exit $TUNNEL_LOGIN
+}
+
+
+# Useful for appending headers to large files
+append_header() {
+    echo $1 | cat - $2 > temp && mv temp $2
+}
+
+
+now() {
+    date +%y%m%d%H%M%S
+}
+
+tblexport(){
+    psql -d $1 -U postgres -h localhost -p $2 -c "COPY $3 TO STDOUT WITH CSV HEADER" > $4.csv
+}
+
+search() {
+    google() {
+        open "https://www.google.com/search?q=$1"
+    }
+
+    soundcloud() {
+        open "https://soundcloud.com/search?q=$1"
+    }
+
+    github() {
+        open "https://github.com/search?q=$1"
+    }
+
+    restaurants() {
+        for restaurant in "$@"; do
+            search google "$restaurant yelp"
+            search google "$restaurant foursquare"
+        done
+    }
+
+    youtube() {
+        open "https://www.youtube.com/results?search_query=$1"
+    }
+$@
+}
+
+dockerpsrm() {
+    docker rm -f $(docker ps -a | awk '{ if ($1 != "CONTAINER") print $1}')
+}
+
+dockerimagerm() {
+    docker rmi $(docker images | awk '{ if ($1 == "<none>") print $3 }')
+}
+
+resolve() {
+    host $1 | awk '{ print $4  }' | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn} -v 'in' | xargs -I {} dig +short -x {}
+}
+
+install_or_update_python_ide_libs() {
+	#flake8
+	#black
+	#jedi
+	#isort
+	#pyls-black
+    # pip install -U pip ipython flake8 black isort pytest nose pyflakes rope importmagic pyls-flake8 pyls-black pyls-isort pyright "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
+    pip install -U pip ipython flake8 black isort pytest nose pyflakes rope importmagic pyls-flake8 pyls-black pyls-isort pyright --force-reinstall
+}
