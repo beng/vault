@@ -101,11 +101,32 @@ resolve() {
 }
 
 install_or_update_python_ide_libs() {
-	#flake8
-	#black
-	#jedi
-	#isort
-	#pyls-black
-    # pip install -U pip ipython flake8 black isort pytest nose pyflakes rope importmagic pyls-flake8 pyls-black pyls-isort pyright "python-lsp-server[all]" --force-reinstall --use-feature=2020-resolver
-    pip install -U pip ipython flake8 black isort pytest nose pyflakes rope importmagic pyls-flake8 pyls-black pyls-isort pyright --force-reinstall
+    pip install -U \
+        pip \
+        ipython \
+        flake8 \
+        black \
+        isort \
+        pytest \
+        nose \
+        pyflakes \
+        rope \
+        importmagic \
+        pyls-flake8 \
+        pyls-black \
+        pyls-isort \
+        pyright \
+        autoflake \
+        mypy \
+        --force-reinstall
+}
+
+git_branch_name() {
+  branch=$(git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/[\1]/p')
+  if [[ $branch == "" ]];
+  then
+    :
+  else
+    echo $branch
+  fi
 }

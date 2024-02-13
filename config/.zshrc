@@ -10,11 +10,24 @@ ZSH_THEME="eastwood"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 
-plugins=(history-substring-search colored-man-pages)
+plugins=(
+	zsh-autosuggestions
+	history-substring-search
+	colored-man-pages
+)
+
 source $HOME/.zshrc.functions
 source "$HOME/.cargo/env"
 source $ZSH/oh-my-zsh.sh
 source ~/.inputrc
+
+# Enable substitution in the prompt.
+setopt prompt_subst
+# custom prompt instead of the theme prompt
+#PROMPT='%{$fg[yellow]%}[ %D{%L:%M:%S} ] %{$fg[white]%}$(git_branch_name) %{$fg[cyan]%}[%~% ]%{$reset_color%}%B$%b '
+NEWLINE=$'\n'
+PROMPT='%{$fg[cyan]%}${NEWLINE}[ %(5~|%-1~/…/%3~|%4~) ] %{$fg[white]%}$(git_branch_name)%{$reset_color%}${NEWLINE}%B> %b '
+
 
 # https://github.com/syl20bnr/spacemacs/wiki/Terminal
 export TERM=xterm-24bit
@@ -26,7 +39,7 @@ export PATH="$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/b
 export PATH=/usr/local/bin:$PATH
 export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/.config/emacs/bin:$PATH"
+#export PATH="$HOME/.config/emacs/bin:$PATH"
 
 # golang setup
 export GOPATH="${HOME}/go"
@@ -46,6 +59,8 @@ alias lsal="ls -al"
 alias tidy=/usr/local/bin/tidy
 alias ed="emacs --daemon=emacs-daemon"
 alias ec="emacsclient --socket-name=emacs-daemon -nw -c"
+alias ec_gui="emacsclient --socket-name=emacs-daemon -c & disown"
+alias arena="cd ~/Documents/code/arena-ai/"
 
 # shell is using 24bit color which breaks SSH sessions, this will
 # set the TERM when sshing into a server
@@ -60,6 +75,7 @@ eval "$(/usr/libexec/path_helper)"
 # pyenv installation
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 # if problems start to arise, go back to using default command `pyenv init -`
 eval "$(pyenv init --path)"
 # this command is faster, but forces manually rehashing
@@ -86,4 +102,21 @@ else
 	compinit -C;
 fi;
 
-PROMPT='%{$fg[yellow]%}[ %D{%L:%M:%S} ] '$PROMPT
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export FZF_DEFAULT_OPTS="--height 40% --layout reverse --info inline --border \
+    --preview 'file {}' --preview-window up,1,border-horizontal \
+    --bind 'ctrl-/:change-preview-window(50%|hidden|)' \
+    --color 'fg:#bbccdd,fg+:#ddeeff,bg:#334455,preview-bg:#223344,border:#778899'"
+
+eval "$(starship init zsh)"
+
+# CTRL-/ to toggle small preview window to see the full command
+# CTRL-Y to copy the command into clipboard using pbcopy
+export FZF_CTRL_R_OPTS="
+  --preview 'echo {}' --preview-window up:3:hidden:wrap
+  --bind 'ctrl-/:toggle-preview'
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+  --color header:italic
+  --header 'Press CTRL-Y to copy command into clipboard'"

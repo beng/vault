@@ -65,3 +65,6 @@
 (package! prettier)
 
 (package! counsel-tramp)
+
+(package! catppuccin
+  :recipe (:host github :repo "catppuccin/emacs"))

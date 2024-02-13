@@ -331,3 +331,19 @@
 
 ;; increae line height
 (setq default-text-properties '(line-spacing 0.3 line-height 1.2))
+
+(after! treesit
+  (setq treesit-language-source-alist
+        '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src" nil nil)
+          (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src" nil nil))))
+
+(use-package typescript-ts-mode
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode))
+  :config
+  (add-hook! '(typescript-ts-mode-hook tsx-ts-mode-hook) #'lsp!))
+
+;; Disable doc help buffer at the bottom
+;; was causing emacs to freeze
+;; https://github.com/emacs-lsp/lsp-mode/issues/1223
+(setq lsp-signature-auto-activate nil)
