@@ -1,9 +1,9 @@
 # -*- mode: sh -*-
 
-zmodload zsh/zprof
+# zmodload zsh/zprof
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/sesshin/.oh-my-zsh"
+export ZSH="/Users/ben/.oh-my-zsh"
 
 # needs to load before the source oh-my-zsh.sh
 ZSH_THEME="eastwood"
@@ -17,7 +17,7 @@ plugins=(
 )
 
 source $HOME/.zshrc.functions
-source "$HOME/.cargo/env"
+#source "$HOME/.cargo/env"
 source $ZSH/oh-my-zsh.sh
 source ~/.inputrc
 
@@ -35,11 +35,14 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
+
 export PATH="$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/opt/X11/bin:/usr/texbin"
 export PATH=/usr/local/bin:$PATH
 export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
-#export PATH="$HOME/.config/emacs/bin:$PATH"
+export PATH="$HOME/.config/emacs/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/Applications/kitty.app/Contents/MacOS:$PATH"
 
 # golang setup
 export GOPATH="${HOME}/go"
@@ -61,6 +64,8 @@ alias ed="emacs --daemon=emacs-daemon"
 alias ec="emacsclient --socket-name=emacs-daemon -nw -c"
 alias ec_gui="emacsclient --socket-name=emacs-daemon -c & disown"
 alias arena="cd ~/Documents/code/arena-ai/"
+alias code="cd ~/Documents/code/"
+alias vim="nvim"
 
 # shell is using 24bit color which breaks SSH sessions, this will
 # set the TERM when sshing into a server
@@ -73,11 +78,11 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 eval "$(/usr/libexec/path_helper)"
 
 # pyenv installation
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+#export PYENV_ROOT="$HOME/.pyenv"
+#command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+#export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 # if problems start to arise, go back to using default command `pyenv init -`
-eval "$(pyenv init --path)"
+#eval "$(pyenv init --path)"
 # this command is faster, but forces manually rehashing
 #eval "$(pyenv init --path --no-rehash)"
 
@@ -102,21 +107,53 @@ else
 	compinit -C;
 fi;
 
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/sbin:$PATH"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+eval "$(fzf --zsh)"
 
-export FZF_DEFAULT_OPTS="--height 40% --layout reverse --info inline --border \
-    --preview 'file {}' --preview-window up,1,border-horizontal \
-    --bind 'ctrl-/:change-preview-window(50%|hidden|)' \
-    --color 'fg:#bbccdd,fg+:#ddeeff,bg:#334455,preview-bg:#223344,border:#778899'"
-
+export FZF_DEFAULT_OPTS="
+    --multi --cycle --keep-right -1 \
+    --height=40% --layout=reverse --info=inline \
+    --preview-window right:70% \
+    --preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300' \
+    --bind='ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)' \
+    --ansi"
+# export FZF_DEFAULT_OPTS="--height 40% --layout reverse --info inline --border \
+#     --preview 'file {} --color=always --line-range=:500' \
+#     --color 'fg:#bbccdd,fg+:#ddeeff,bg:#334455,preview-bg:#223344,border:#778899'"
+#
 eval "$(starship init zsh)"
 
 # CTRL-/ to toggle small preview window to see the full command
 # CTRL-Y to copy the command into clipboard using pbcopy
 export FZF_CTRL_R_OPTS="
   --preview 'echo {}' --preview-window up:3:hidden:wrap
-  --bind 'ctrl-/:toggle-preview'
+  --bind 'ctrl-\:toggle-preview'
   --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
   --color header:italic
   --header 'Press CTRL-Y to copy command into clipboard'"
+
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+export LIBRARY_PATH="/opt/homebrew/opt/gcc/lib/gcc/current:/opt/homebrew/opt/libgccjit/lib/gcc/current:/opt/homebrew/opt/gcc/lib/gcc/current/gcc/aarch64-apple-darwin23/13"
+eval "$(/opt/homebrew/bin/mise activate zsh)"
+
+# remove duplicates from history
+#HISTSIZE=5000
+HISTFILE=~/.zsh_history
+#SAVEHIST=5000
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt incappendhistory
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+# case insensitive search
+autoload -U compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+

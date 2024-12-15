@@ -1,5 +1,84 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;; Place your private configuration here! Remember, you do not need to run 'doom
+;; sync' after modifying this file!
+
+
+;; Some functionality uses this to identify you, e.g. GPG configuration, email
+;; clients, file templates and snippets. It is optional.
+;; (setq user-full-name "John Doe"
+;;       user-mail-address "john@doe.com")
+
+;; Doom exposes five (optional) variables for controlling fonts in Doom:
+;;
+;; - `doom-font' -- the primary font to use
+;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
+;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;;   presentations or streaming.
+;; - `doom-symbol-font' -- for symbols
+;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
+;;
+;; See 'C-h v doom-font' for documentation and more examples of what they
+;; accept. For example:
+;;
+;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
+;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
+;;
+;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
+;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
+;; refresh your font settings. If Emacs still can't find your font, it likely
+;; wasn't installed correctly. Font issues are rarely Doom issues!
+
+;; There are two ways to load a theme. Both assume the theme is installed and
+;; available. You can either set `doom-theme' or manually load a theme with the
+;; `load-theme' function. This is the default:
+;;(setq doom-theme 'doom-one)
+
+;; This determines the style of line numbers in effect. If set to `nil', line
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type t)
+
+;; If you use `org' and don't want your org files in the default location below,
+;; change `org-directory'. It must be set before org loads!
+(setq org-directory "~/org/")
+
+
+;; Whenever you reconfigure a package, make sure to wrap your config in an
+;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
+;;
+;;   (after! PACKAGE
+;;     (setq x y))
+;;
+;; The exceptions to this rule:
+;;
+;;   - Setting file/directory variables (like `org-directory')
+;;   - Setting variables which explicitly tell you to set them before their
+;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
+;;   - Setting doom variables (which start with 'doom-' or '+').
+;;
+;; Here are some additional functions/macros that will help you configure Doom.
+;;
+;; - `load!' for loading external *.el files relative to this one
+;; - `use-package!' for configuring packages
+;; - `after!' for running code after a package has loaded
+;; - `add-load-path!' for adding directories to the `load-path', relative to
+;;   this file. Emacs searches the `load-path' when you load packages with
+;;   `require' or `use-package'.
+;; - `map!' for binding new keys
+;;
+;; To get information about any of these functions/macros, move the cursor over
+;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+;; This will open documentation for it, including demos of how they are used.
+;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
+;; etc).
+;;
+;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+;; they are implemented.
+
+
+
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -23,6 +102,7 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
+
 (setq user-full-name ""
       user-mail-address "")
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -36,7 +116,16 @@
       doom-big-font (font-spec :family "Fira Code Retina" :size 24)
       doom-big-font-increment 5
       doom-variable-pitch-font (font-spec :family "Fira Code Retina")
-      doom-unicode-font (font-spec :family "Fira Code Retina"))
+      doom-unicode-font (font-spec :family "FiraCode Nerd Font"))
+
+
+(setq shell-file-name "/bin/zsh")
+
+(use-package! exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :init
+  (setq exec-path-from-shell-variables '("PATH" "MANPATH" "SHELL"))
+  (exec-path-from-shell-initialize))
 
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
@@ -46,11 +135,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-gruvbox)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/org-notes/org/")
+(load-theme 'catppuccin :no-confirm)
+(setq catppuccin-flavor 'macchiato) ;; mocha, macchiato, latte, frappe
+(catppuccin-reload)
 
 (setq
  ;; set undo limit to 10mb
@@ -61,88 +148,39 @@
  line-spacing 3
  lsp-diagnostics-provider :auto)
 
-;; (unless (string-match-p "^Power N/A" (battery))
-;;   (display-battery-mode 1))
-
 ;; iterate through CamelCase words
 (global-subword-mode 1)
 
 ;; new buffers open in org mode rather than fundamental mode
 (setq-default major-mode 'org-mode)
 
-(after! good-scroll
-  (good-scroll-mode 1))
 
-(after! python
-  (setenv "WORKON_HOME" "~/.pyenv/versions")
-    (setq flycheck-enabled-checkers '(python-flake8 python-mypy))
-  (setq flycheck-disabled-checkers '(python-pylint))
-  (setq flycheck-python-flake8-executable "flake8")
-  (setq python-indent-offset 4
-        python-indent 4
-        python-shell-interpreter "ipython3"
-        python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True"
-        python-shell-prompt-detect-enabled nil
-        python-shell-prompt-detect-failure-warning nil
-        flycheck-python-pylint-executable "pylint"
-        flycheck-python-flake8-executable "flake8"
-        flycheck-highlighting-mode "lines"
-        flycheck-python-pycompile-executable "python3")
+;; (after! python
+;;   (setenv "WORKON_HOME" "~/.pyenv/versions")
+;;     (setq flycheck-enabled-checkers '(python-flake8 python-mypy))
+;;   (setq flycheck-disabled-checkers '(python-pylint))
+;;   (setq flycheck-python-flake8-executable "flake8")
+;;   (setq python-indent-offset 4
+;;         python-indent 4
+;;         python-shell-interpreter "ipython3"
+;;         python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True"
+;;         python-shell-prompt-detect-enabled nil
+;;         python-shell-prompt-detect-failure-warning nil
+;;         flycheck-python-pylint-executable "pylint"
+;;         flycheck-python-flake8-executable "flake8"
+;;         flycheck-highlighting-mode "lines"
+;;         flycheck-python-pycompile-executable "python3")
 
-  ;; not sure if it's better to enable use this package or to use
-  ;; (set-formatter!) like i previously was like so:
-  ;;     (setq-hook! 'python-mode-hook +format-with-lsp nil)
-  ;;     (set-formatter! 'python-mode "black -q" ))
+;; ;; https://gist.github.com/jordangarrison/8720cf98126a1a64890b2f18c1bc69f5
+;; (use-package! python-black
+;;   :demand t
+;;   :hook (python-mode . python-black-on-save-mode)
+;;   :config
+;;   ;;(set-formatter! 'python-mode #'python-black-buffer)
+;;   (map! :leader :desc "Blacken Buffer" "m b b" #'python-black-buffer)
+;;   (map! :leader :desc "Blacken Region" "m b r" #'python-black-region)
+;;   (map! :leader :desc "Blacken Statement" "m b s" #'python-black-statement)))
 
-  ;; https://gist.github.com/jordangarrison/8720cf98126a1a64890b2f18c1bc69f5
-  (use-package! python-black
-    :demand t
-    :hook (python-mode . python-black-on-save-mode)
-    :config
-    ;;(set-formatter! 'python-mode #'python-black-buffer)
-    (map! :leader :desc "Blacken Buffer" "m b b" #'python-black-buffer)
-    (map! :leader :desc "Blacken Region" "m b r" #'python-black-region)
-    (map! :leader :desc "Blacken Statement" "m b s" #'python-black-statement)))
-
-
-
-(after! rustic
-  ;;(setq rustic-format-on-save t)
-  (setq rustic-lsp-server 'rust-analyzer))
-
-(after! cargo
-  (setq cargo-process--custom-path-to-bin "~/.cargo/bin/cargo"))
-
-
-;; TODO: this isnt loading correctly, only way
-;; to make it work is to load it globally, not working
-;; when i use ( after! prettier )
-;;(add-hook 'after-init-hook #'global-prettier-mode)
-;;
-;;BG: 12/08/2021 DISABLED GLOBAL HOOK OF PRETTIER MODE as it was breaking
-;;python indentation. if JS/react starts to break, its because of this!
-;;to fix, renable this!
-;;(add-hook 'after-init-hook #'global-prettier-mode)
-(add-hook 'web-mode-hook #'prettier-mode)
-(add-hook 'css-mode-hook #'prettier-mode)
-(add-hook 'typescript-mode-hook #'prettier-mode)
-;; (after! prettier
-;;   (add-hook 'after-init-hook #'global-prettier-mode))
-;;(add-hook! (global-prettier-mode)))
-
-(after! rust
-  ;;(setq rust-format-on-save t)
-  (add-hook! :after rust-mode-hook #'lsp))
-;;(add-hook! :after rust-mode-hook #'rust-enable-format-on-save))
-
-(add-hook! rust-mode
-           ;;(flycheck-rust-setup)
-           (flycheck-mode)
-           (cargo-minor-mode)
-           (lsp)
-           ;;(rust-enable-format-on-save)
-           (map! :map rust-mode-map
-                 "C-c C-f" #'rust-format-buffer))
 
 
 
@@ -153,25 +191,17 @@
 
 (add-hook 'term-exec-hook 'my-term-use-utf8)
 
-;; fixes issue with PATH and env vars not being
-;; inherited correctly
-(when (memq window-system '(mac ns x))
-  (use-package exec-path-from-shell
-    :ensure t
-    :config
-    (exec-path-from-shell-initialize)))
+;; ;; fixes issue with PATH and env vars not being
+;; ;; inherited correctly
+;; (when (memq window-system '(mac ns x))
+;;   (exec-path-from-shell-initialize))
 
-(cond
- ((eq window-system 'ns) ; macosx
-  ;; Invoke login shells, so that .profile or .bash_profile is read
-  (setq shell-command-switch "-lc")))
-
-;; disable line numbering. scrolling is very slow on a big monitor
-;; and disabling line numbering has been a way to reduce lag
-(setq display-line-numbers-type 'relative)
+;; (cond
+;;  ((eq window-system 'ns) ; macosx
+;;   ;; Invoke login shells, so that .profile or .bash_profile is read
+;;   (setq shell-command-switch "-lc")))
 
 ;; insert timestamp when status set to closed in org mode
-;;
 (setq org-log-done 'time
       ;; hide * * for bold // for italics, etc
       org-hide-emphasis-markers t)
@@ -180,48 +210,126 @@
   (setq evil-escape-delay .5)
   (setq evil-escape-key-sequence "jj"))
 
-(after! company
-  (setq company-tooltip-limit 5
-	company-idle-delay 0.05
-        company-minimum-prefix-length 2
-        ;;company-dabbrev-downcase nil
-        company-tooltip-minimum-width 80
-        company-tooltip-align-annotations t)
-  (add-to-list 'company-backends 'company-capf))
+(use-package! pyvenv
+  :after python
+  :config
+  (pyvenv-tracking-mode 1))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; BEGIN CUSTOMIZATION BORROWED FROM THIS CONFIG
-;; - https://github.com/Brettm12345/doom-emacs-literate-config/blob/master/config.org#completioncompany
-;; - https://www.soitflows.xyz/posts/my-doom-emacs-configuration/
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; use ripgrep as default for project search
-(setq +ivy-project-search-engines '(rg))
+(use-package! rg
+  :config
+  (rg-enable-default-bindings))
 
-(after! ivy
-  (ivy-add-actions
-   'counsel-M-x
-   `(("h" +ivy/helpful-function "Helpful"))))
+(defun my/consult-projectile-or-find ()
+  "Use `consult-projectile-find-file` if in a project; otherwise, emulate its behavior using `consult-find` with ripgrep."
+  (interactive)
+  (if (projectile-project-p)
+      ;; Use consult-projectile-find-file for Projectile projects
+      (consult-projectile-find-file)
+    (call-interactively #'find-file)))
+
+;; (defun my/consult-projectile-or-find ()
+;;   "Use `consult-projectile-find-file` if in a project; otherwise, use `consult-find`."
+;;   (interactive)
+;;   (if (projectile-project-p)
+;;       (consult-projectile-find-file)
+;;     ;; Fallback for non-project directories using ripgrep
+;;     (let ((default-directory (or default-directory ".")))
+;;       (let* ((rg-command "rg --files --hidden --glob '!.git/' --glob '!node_modules/' --glob '!venv/' .")
+;;              (files (split-string (shell-command-to-string rg-command) "\n" t))
+;;              ;; Use Marginalia to annotate file metadata
+;;              (annotated-files
+;;               (mapcar (lambda (file)
+;;                         (propertize file 'consult--metadata (file-attributes file)))
+;;                       files)))
+;;         ;; Pass annotated files to consult--read
+;;         (consult--read
+;;          annotated-files
+;;          :prompt "Find file: "
+;;          :sort t
+;;          :require-match t
+;;          :category 'file
+;;          :history 'file-name-history
+;;          :lookup #'consult--lookup-candidate)))))
+
+(setq grep-program "rg"
+      grep-command "rg --color=auto --line-number --no-heading --smart-case --hidden")
+
+(setq +default-search-backend 'rg)
+
+(setq projectile-generic-command "rg --files --hidden --ignore-case --glob '!.git/' --glob '!node_modules/' --glob '!venv/'")
+
+(setq counsel-rg-base-command
+      "rg --line-number --no-heading --hidden --smart-case --glob '!.git/' --glob '!node_modules/' --glob '!venv/' %s")
+
+(setq consult-grep-command
+      "rg --null --line-buffered --color=always --max-columns=1000 --smart-case --no-heading --line-number --hidden . -e ARG")
+
+(setq consult-ripgrep-command
+      "rg --null --line-buffered --color=always --max-columns=1000 --smart-case --no-heading --line-number --hidden --glob '!.git/' --glob '!node_modules/' --glob '!venv/' . -e ARG")
+
+(setq consult-find-command
+      "rg --files --hidden --glob '!.git/' --glob '!node_modules/' --glob '!venv/' .")
+
+(setq projectile-indexing-method 'alien)
+(setq projectile-enable-caching t)
 
 
-(after! counsel
-  (setq counsel-evil-registers-height 20
-        counsel-yank-pop-height 20
-        counsel-org-goto-face-style 'org
-        counsel-org-headline-display-style 'title
-        counsel-org-headline-display-tags t
-        counsel-org-headline-display-todo t))
+(map! :leader
+      :desc "Find file in project" "SPC" #'my/consult-projectile-or-find
+      :desc "Find file in project" "f f" #'my/consult-projectile-or-find
+      :desc "Switch project with consult" "p p" #'consult-projectile-switch-project
+      :desc "Search project with ripgrep" "p s" #'consult-ripgrep
+      (:prefix ("s" . "search")
+       :desc "Ripgrep project" "r" #'consult-ripgrep
+       :desc "Search line" "l" #'consult-line
+       :desc "Search recent file" "f" #'consult-find))
 
-(after! ivy
-  (setq ivy-use-selectable-prompt t
-        ivy-auto-select-single-candidate t
-        ivy-rich-parse-remote-buffer nil
-        +ivy-buffer-icons nil
-        ivy-use-virtual-buffers nil
-        ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-cd-selected
-        ivy-height 20
-        ivy-rich-switch-buffer-name-max-length 50))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Enable rg.el for extra functionality
+
+
+;; (after! company
+;;   (setq company-tooltip-limit 5
+;; 	company-idle-delay 0.05
+;;         company-minimum-prefix-length 2
+;;         ;;company-dabbrev-downcase nil
+;;         company-tooltip-minimum-width 80
+;;         company-tooltip-align-annotations t)
+;;   (add-to-list 'company-backends 'company-capf))
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;; BEGIN CUSTOMIZATION BORROWED FROM THIS CONFIG
+;; ;; - https://github.com/Brettm12345/doom-emacs-literate-config/blob/master/config.org#completioncompany
+;; ;; - https://www.soitflows.xyz/posts/my-doom-emacs-configuration/
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;; use ripgrep as default for project search
+;; (setq +ivy-project-search-engines '(rg))
+
+;; (after! ivy
+;;   (ivy-add-actions
+;;    'counsel-M-x
+;;    `(("h" +ivy/helpful-function "Helpful"))))
+
+
+;; (after! counsel
+;;   (setq counsel-evil-registers-height 20
+;;         counsel-yank-pop-height 20
+;;         counsel-org-goto-face-style 'org
+;;         counsel-org-headline-display-style 'title
+;;         counsel-org-headline-display-tags t
+;;         counsel-org-headline-display-todo t))
+
+;; (after! ivy
+;;   (setq ivy-use-selectable-prompt t
+;;         ivy-auto-select-single-candidate t
+;;         ivy-rich-parse-remote-buffer nil
+;;         +ivy-buffer-icons nil
+;;         ivy-use-virtual-buffers nil
+;;         ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-cd-selected
+;;         ivy-height 20
+;;         ivy-rich-switch-buffer-name-max-length 50))
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; END CUSTOMIZATION BORROWED FROM THIS CONFIG
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -268,82 +376,127 @@
 
 ;; set cursor shape in iterm/terminal to indicate inser/normal
 ;; mode for evil mode
-(global-term-cursor-mode)
+;;(global-term-cursor-mode)
 
-;; (after! deft
-;;   (setq deft-directory "~/Documents/notes/org-roam"
-;;         deft-recursive t
-;;         deft-use-filename-as-title nil
-;;         deft-use-filter-string-for-filename t
-;;         deft-extensions '("md" "txt" "org")
-;;        deft-default-extension "org"))
-
-(after! org
-  ;; (add-hook! 'org-mode-hook #'org-superstar-mode)
-  ;; (setq org-superstar-prettify-item-bullets t )
-  ;; type shortcut, eg `<sh' and then hit Tab to expand the template
-  (require 'org-tempo)
-  (add-to-list 'org-structure-template-alist '("shell" . "src sh"))
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("python" . "src python"))
-  (add-to-list 'org-structure-template-alist '("golang" . "src go"))
-  (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
-  (add-to-list 'org-structure-template-alist '("json" . "src json")))
-
-
-;; (after! org-roam
-;;   (setq org-roam-completion-system 'ivy-mode
-;;         org-roam-directory "~/Documents/org-notes/org-roam"
-;;         org-roam-capture-templates
-;;         '(("d" "default" plain
-;;            "%?"
-;;            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-;;            :unnarrowed t)
-;;           ("l" "programming language" plain
-;;            "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n* Reference:\n\n"
-;;            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-;;            :unnarrowed t)))
-;;   (org-roam-db-autosync-mode))
-
-;; org-roam before-hook throws an error and cant sync files to db.
-;; ` (void-function native-comp-available-p)`
-;; see issue below. this is a temp workaround
-;; https://github.com/hlissner/doom-emacs/issues/5706
-(defun native-comp-available-p () nil)
-
-(after! tramp
-  (setq tramp-inline-compress-start-size 1000)
-  (setq tramp-copy-size-limit 10000)
-  (setq vc-handled-backends '(Git))
-  (setq tramp-default-method "ssh")
-  (setq tramp-use-ssh-controlmaster-options nil)
-  (setq projectile--mode-line "Projectile")
-  (setq tramp-verbose 1))
-
-
-(after! counsel-tramp
-(add-hook 'counsel-tramp-pre-command-hook '(lambda () ;;(global-aggressive-indent-mode 0)
-				     (projectile-mode 0)))
-				     ;;(editorconfig-mode 0)))
-(add-hook 'counsel-tramp-quit-hook '(lambda () ;;(global-aggressive-indent-mode 1)
-			      (projectile-mode 1))))
-			      ;;(editorconfig-mode 1))))
+;; (defun native-comp-available-p () nil)
 
 ;; increae line height
 (setq default-text-properties '(line-spacing 0.3 line-height 1.2))
 
-(after! treesit
-  (setq treesit-language-source-alist
-        '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src" nil nil)
-          (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src" nil nil))))
-
-(use-package typescript-ts-mode
-  :mode (("\\.ts\\'" . typescript-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode))
-  :config
-  (add-hook! '(typescript-ts-mode-hook tsx-ts-mode-hook) #'lsp!))
+;; (after! treesit
+;;   (setq treesit-language-source-alist
+;;         '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src" nil nil)
+;;           (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src" nil nil))))
 
 ;; Disable doc help buffer at the bottom
 ;; was causing emacs to freeze
 ;; https://github.com/emacs-lsp/lsp-mode/issues/1223
 (setq lsp-signature-auto-activate nil)
+
+(use-package! mise
+  :config
+  (add-hook 'after-init-hook #'global-mise-mode))
+
+(after! markdown-mode
+  (setq markdown-command "grip"))
+
+(after! vertico
+  (vertico-mode)
+
+  (setq vertico-scroll-margin 2
+        vertico-resize t
+        vertico-count 15)
+
+  (after! marginalia
+    (marginalia-mode)
+    (setq marginalia-censor-variables nil)
+
+    ;; Force Marginalia to always annotate file candidates
+    (add-to-list 'marginalia-command-categories '(consult-projectile-find-file . file))
+    (add-to-list 'marginalia-command-categories '(consult-file . file))
+
+    ;; Custom annotation for files
+    (defadvice! +marginalia--annotate-local-file-colorful (cand)
+      "A colorful version of `marginalia--annotate-local-file` to display permissions and timestamps."
+      :override #'marginalia--annotate-local-file
+      (when-let (attrs (file-attributes (substitute-in-file-name
+                                         (marginalia--full-candidate cand))
+                                        'integer))
+        (marginalia--fields
+         ((marginalia--file-owner attrs) :width 12 :face 'marginalia-file-owner)
+         ((marginalia--file-modes attrs)) ;; File permissions
+         ((+marginalia-file-size-colorful (file-attribute-size attrs)) :width 7)
+         ((+marginalia--time-colorful (file-attribute-modification-time attrs)) :width 12))))
+
+    ;; Custom colorful file sizes
+    (defun +marginalia-file-size-colorful (size)
+      (let* ((size-index (/ (log10 (+ 1 size)) 7.0))
+             (color (if (< size-index 10000000) ; 10 MB
+                        (doom-blend 'orange 'green size-index)
+                      (doom-blend 'red 'orange (- size-index 1)))))
+        (propertize (file-size-human-readable size) 'face (list :foreground color))))
+
+    ;; Custom colorful timestamps
+    (defun +marginalia--time-colorful (time)
+      (let* ((seconds (float-time (time-subtract (current-time) time)))
+             (color (doom-blend
+                     (face-attribute 'marginalia-date :foreground nil t)
+                     (face-attribute 'marginalia-documentation :foreground nil t)
+                     (/ 1.0 (log (+ 3 (/ (+ 1 seconds) 345600.0))))))) ;; Time decay coloring
+        (propertize (marginalia--time time) 'face (list :foreground color))))))
+;; (after! marginalia
+;;   (marginalia-mode)
+;;   (setq marginalia-censor-variables nil)
+;;   ;;(add-to-list 'marginalia-command-categories '(consult-projectile-find-file . file))
+;;   (setq marginalia-command-categories '((consult-find . file)
+;;                                         (consult-projectile-find-file . file)))
+
+;;   (defadvice! +marginalia--annotate-local-file-colorful (cand)
+;;     :override #'marginalia--annotate-local-file
+;;     (when-let (attrs (file-attributes (substitute-in-file-name
+;;                                        (marginalia--full-candidate cand))
+;;                                       'integer))
+;;       (marginalia--fields
+;;        ((marginalia--file-owner attrs) :width 12 :face 'marginalia-file-owner)
+;;        ((marginalia--file-modes attrs))
+;;        ((+marginalia-file-size-colorful (file-attribute-size attrs)) :width 7)
+;;        ((+marginalia--time-colorful (file-attribute-modification-time attrs)) :width 12))))
+
+;;   (defun +marginalia-file-size-colorful (size)
+;;     (let* ((size-index (/ (log10 (+ 1 size)) 7.0))
+;;            (color (if (< size-index 10000000) ; 10 MB
+;;                       (doom-blend 'orange 'green size-index)
+;;                     (doom-blend 'red 'orange (- size-index 1)))))
+;;       (propertize (file-size-human-readable size) 'face (list :foreground color))))
+
+;;   (defun +marginalia--time-colorful (time)
+;;     (let* ((seconds (float-time (time-subtract (current-time) time)))
+;;            (color (doom-blend
+;;                    (face-attribute 'marginalia-date :foreground nil t)
+;;                    (face-attribute 'marginalia-documentation :foreground nil t)
+;;                    (/ 1.0 (log (+ 3 (/ (+ 1 seconds) 345600.0))))))) ;; Time decay coloring
+;;       (propertize (marginalia--time time) 'face (list :foreground color))))))
+
+
+;; (after! nerd-icons-completion
+;;   (nerd-icons-completion-mode))
+
+;; ;; Enable Nerd Icons in Dired Mode
+;; (after! dired
+;;   (add-hook 'dired-mode-hook #'nerd-icons-dired-mode))
+
+
+;; (use-package! marginalia
+;;   :after vertico
+;;   :config
+;;   (marginalia-mode))
+
+(use-package! nerd-icons-completion
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+
+(use-package! nerd-icons-dired
+  :hook (dired-mode . nerd-icons-dired-mode))
