@@ -10,3 +10,23 @@ https://kinesis-ergo.com/support/advantage2/
   | Caps Lock  | Left Ctrl       | Physicallly moved keys |
   | Tilde      | Home            | Physicallly moved keys |
   | +=         | End             |                        |
+
+
+
+-----
+
+# kinesis advantage 360 Mappings
+ mapping down through below UI 
+
+https://clique.kinesis-ergo.com/
+
+  | Source Key | Destination Key |                       |
+  |------------+-----------------+------------------------|
+  | Left Ctrl         |  Esc                             |
+  | Esc               | Left Ctrl                        |
+  | Left Ctrl         | Caps Lock                        |
+  | Wn Key (cmd osx)  | Delete                           |
+  | Delete | Wn key (cmd osx)                            |
+
+
+
