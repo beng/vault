@@ -20,13 +20,12 @@ https://kinesis-ergo.com/support/advantage2/
 
 https://clique.kinesis-ergo.com/
 
-  | Source Key | Destination Key |                       |
-  |------------+-----------------+------------------------|
-  | Left Ctrl         |  Esc                             |
-  | Esc               | Left Ctrl                        |
-  | Left Ctrl         | Caps Lock                        |
-  | Wn Key (cmd osx)  | Delete                           |
-  | Delete | Wn key (cmd osx)                            |
-
-
-
+  | Source Key       | Destination Key  |   |
+  |------------------+------------------+---|
+  | Left Ctrl        | Esc              |   |
+  | Esc              | Left Ctrl        |   |
+  | Left Ctrl        | Caps Lock        |   |
+  | Wn Key (cmd osx) | Delete           |   |
+  | Delete           | Wn key (cmd osx) |   |
+  | +=         | End             |                        |
+  | End      | +=           |                        |
