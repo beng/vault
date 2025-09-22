@@ -1,0 +1,10 @@
+cask "font-fira-code-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-hack-nerd-font"
+cask "nikitabobko/tap/aerospace"
+cask "wezterm"
+brew "fontconfig"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+brew "coreutils"
+
