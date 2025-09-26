@@ -85,4 +85,15 @@ return function(config)
 			action = action.ActivateTab(i - 1),
 		})
 	end
+
+	table.insert(config.keys, {
+		key = "{",
+		mods = "LEADER",
+		action = wezterm.action.MoveTabRelative(-1),
+	})
+	table.insert(config.keys, {
+		key = "}",
+		mods = "LEADER",
+		action = wezterm.action.MoveTabRelative(1),
+	})
 end
