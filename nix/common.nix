@@ -49,11 +49,12 @@ in
       nixfmt-rfc-style
       viu
       imagemagickBig
+      uv
     ]
     ++ [ mise-pkg ];
   home.activation = {
     setupDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      mkdir -p ${config.home.homeDirectory}/{bin,.config}
+      mkdir -p ${config.home.homeDirectory}/{bin,.config,.local/bin}
       mkdir -p ${config.user.paths.dev}
     '';
 
@@ -74,6 +75,7 @@ in
 
   home.sessionPath = [
     "$HOME/bin"
+    "$HOME/.local/bin"
     "${vaultDir}/bin"
   ];
 
@@ -97,6 +99,10 @@ in
     ".config/bat/themes/catppuccin-macchiato.tmTheme" = {
       source = batCatppuccinTheme;
       onChange = "${pkgs.bat}/bin/bat cache --build";
+    };
+    ".config/karabiner/assets/complex_modifications/" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/dotfiles/karabiner/";
+      recursive = true;
     };
   };
   programs.neovim = {
@@ -164,6 +170,12 @@ in
     # ];
   };
 
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+  };
+
   programs.eza = {
     enable = true;
     enableBashIntegration = true;
@@ -186,6 +198,7 @@ in
         node = [ "24.8.0" ];
         rust = "latest";
       };
+
       settings = {
         experimental = true;
         always_keep_download = false;
@@ -227,9 +240,25 @@ in
         else
           compinit -C
         fi
+        export EDITOR="nvim"
+        export VISUAL="$EDITOR"
+        autoload -z edit-command-line
+        zle -N edit-command-line
+        bindkey '^X^E' edit-command-line
 
         eval "$(${toString mise-pkg}/bin/mise activate zsh)"
         source ${toString fzfTab}/fzf-tab.plugin.zsh
+
+        eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd j)"
+
+        zoxide-jump-widget() {
+          local dir
+          dir="$(zoxide query -i)" || return
+          builtin cd -- "$dir"
+          zle reset-prompt
+        }
+        zle -N zoxide-jump-widget
+        bindkey '^G' zoxide-jump-widget
 
         zstyle ':fzf-tab:*' use-fzf-default-opts yes
         zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'

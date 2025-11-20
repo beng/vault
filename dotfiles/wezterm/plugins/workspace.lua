@@ -6,6 +6,18 @@ return function(config)
 	workspace_switcher.apply_to_config(config)
 
 	table.insert(config.keys, {
+		key = "d",
+		mods = "LEADER",
+		action = action.SwitchToWorkspace({ name = "dev" }),
+	})
+
+	table.insert(config.keys, {
+		key = "i",
+		mods = "LEADER",
+		action = action.SwitchToWorkspace({ name = "infra" }),
+	})
+
+	table.insert(config.keys, {
 		key = "s",
 		mods = "LEADER",
 		action = workspace_switcher.switch_workspace(),

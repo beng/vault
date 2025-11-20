@@ -13,16 +13,32 @@ return function(config)
 	local function split_nav(key)
 		return {
 			key = key,
-			mods = "LEADER",
-			action = wezterm.action_callback(function(win, pane)
-				if pane:get_user_vars().IS_NVIM == "true" then
-					win:perform_action({ SendKey = { key = key, mods = "CTRL" } }, pane)
-				else
-					win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
-				end
-			end),
+			mods = "CTRL",
+			action = wezterm.action.Multiple({
+				-- 1. Try to send the keypress directly to the pane.
+				--    Neovim will catch this and switch its internal split.
+				{ SendKey = { key = key, mods = "CTRL" } },
+
+				-- 2. If the pane is *not* a program that captures
+				--    those keys (like your shell prompt), Wezterm will
+				--    "fall back" and run this next action instead.
+				{ ActivatePaneDirection = direction_keys[key] },
+			}),
 		}
 	end
+	-- local function split_nav(key)
+	-- 	return {
+	-- 		key = key,
+	-- 		mods = "CTRL",
+	-- 		action = wezterm.action_callback(function(win, pane)
+	-- 			if pane:get_user_vars().IS_NVIM == "true" then
+	-- 				win:perform_action({ SendKey = { key = key, mods = "CTRL" } }, pane)
+	-- 			else
+	-- 				win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
+	-- 			end
+	-- 		end),
+	-- 	}
+	-- end
 
 	local function resize_pane(key)
 		return {
@@ -33,6 +49,8 @@ return function(config)
 	end
 
 	config.keys = {
+		{ key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
+
 		-- Pane splitting
 		{ key = "-", mods = "LEADER", action = action.SplitVertical({ domain = "CurrentPaneDomain" }) },
 		{ key = "\\", mods = "LEADER", action = action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
