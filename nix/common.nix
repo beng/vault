@@ -7,7 +7,7 @@
   ...
 }:
 let
-  vaultDir = "${config.user.paths.dev}/vault";
+  vaultDir = "${config.user.paths.dev}/beng-vault";
   copyCmd = toString config.user.commands.copy;
   runCmd =
     cmd:
@@ -50,6 +50,7 @@ in
       viu
       imagemagickBig
       uv
+      ast-grep
     ]
     ++ [ mise-pkg ];
   home.activation = {

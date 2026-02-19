@@ -62,10 +62,17 @@ return function(config)
 
 		-- Panes
 		{ key = "m", mods = "LEADER", action = action.TogglePaneZoomState },
-		{ key = "_", mods = "LEADER", action = action.AdjustPaneSize({ "Down", 10 }) },
-		{ key = "+", mods = "LEADER", action = action.AdjustPaneSize({ "Up", 10 }) },
-		{ key = ">", mods = "LEADER", action = action.AdjustPaneSize({ "Right", 10 }) },
-		{ key = "<", mods = "LEADER", action = action.AdjustPaneSize({ "Left", 10 }) },
+		--   { key = "_", mods = "LEADER", action = action.AdjustPaneSize({ "Down", 10 }) },
+		--   { key = "+", mods = "LEADER", action = action.AdjustPaneSize({ "Up", 10 }) },
+		-- { key = ">", mods = "LEADER", action = action.AdjustPaneSize({ "Right", 10 }) },
+		-- { key = "<", mods = "LEADER", action = action.AdjustPaneSize({ "Left", 10 }) },
+
+		-- Rotate panes
+		{ key = ".", mods = "LEADER", action = action.RotatePanes("Clockwise") },
+		{ key = ",", mods = "LEADER", action = action.RotatePanes("CounterClockwise") },
+
+		-- Swap panes (select target)
+		{ key = "/", mods = "LEADER", action = action.PaneSelect({ mode = "SwapWithActive" }) },
 
 		-- Copy mode
 		{ key = "[", mods = "LEADER", action = action.ActivateCopyMode },

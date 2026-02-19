@@ -97,6 +97,7 @@ ctrl-6 = 'workspace 6'
 ctrl-7 = 'workspace 7'
 ctrl-8 = 'workspace 8'
 ctrl-9 = 'workspace 9'
+ctrl-0 = 'workspace 0'
 alt-left = 'workspace prev --wrap-around'
 alt-right = 'workspace next --wrap-around'
 
@@ -128,14 +129,18 @@ m = 'fullscreen'
 r = 'balance-sizes'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-h = 'focus left'
-j = 'focus down'
-k = 'focus up'
-l = 'focus right'
+h = 'focus --boundaries-action wrap-around-the-workspace left'
+j = 'focus --boundaries-action wrap-around-the-workspace down'
+k = 'focus --boundaries-action wrap-around-the-workspace up'
+l = 'focus --boundaries-action wrap-around-the-workspace right'
+
 # a = 'join-with left'
 # d = 'join-with right'
 # w = 'join-with up'
 # s = 'join-with down'
+
+ctrl-p = 'workspace p'
+ctrl-c = 'workspace c'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 shift-h = 'move left'
@@ -157,6 +162,9 @@ shift-6 = 'move-node-to-workspace 6'
 shift-7 = 'move-node-to-workspace 7'
 shift-8 = 'move-node-to-workspace 8'
 shift-9 = 'move-node-to-workspace 9'
+shift-0 = 'move-node-to-workspace 0'
+shift-p = 'move-node-to-workspace p'
+shift-c = 'move-node-to-workspace c'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 tab = 'workspace-back-and-forth'

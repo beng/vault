@@ -49,6 +49,15 @@ return {
         end,
         desc = "Find files (buffer dir)",
       },
+      {
+        "<leader>sd",
+        function()
+          local dir = vim.fn.expand("%:p:h")
+          require("snacks").picker.grep({ cwd = dir })
+        end,
+        desc = "Grep (buffer dir)",
+      },
+
       { "<leader>bN", "<cmd>enew<cr>", desc = "New buffer" },
     },
   },

@@ -6,6 +6,7 @@ require("core.keybindings")(config)
 
 require("plugins.workspace")(config)
 require("plugins.bar")(config)
+-- require("plugins.pivot_panes")(config)
 
 return config
 
