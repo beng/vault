@@ -26,6 +26,10 @@ let
     sha256 = "01jspd4qq7lw0g891hilladvas8p2q67icrgv1lyaw5rapv9000i";
   };
   #fzfPreviewScript = "${vaultDir}/bin/fzf-preview.sh";
+  claudeLinks = builtins.listToAttrs (map (f: {
+    name = ".claude/${f}";
+    value = { source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/dotfiles/.claude/${f}"; };
+  }) [ "CLAUDE.md" "settings.json" "agents" "commands" "docs" "examples" "guidelines" "scripts" "teams" ]);
 in
 {
   home.username = config.user.username;
@@ -105,7 +109,7 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/dotfiles/karabiner/";
       recursive = true;
     };
-  };
+  } // claudeLinks;
   programs.neovim = {
     enable = true;
     viAlias = true;
@@ -229,6 +233,7 @@ in
           source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
         fi
         export PATH="$HOME/bin:$PATH"
+        export PATH="/Users/ben/.embedder/bin:$PATH"
 
         export EZA_CONFIG_DIR="$HOME/.config/eza"
         export EZA_THEME="$HOME/.config/eza/theme.yml"
@@ -251,6 +256,7 @@ in
         source ${toString fzfTab}/fzf-tab.plugin.zsh
 
         eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd j)"
+
 
         zoxide-jump-widget() {
           local dir

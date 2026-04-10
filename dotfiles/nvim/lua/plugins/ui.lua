@@ -1,9 +1,10 @@
 return {
   {
     "nvim-lualine/lualine.nvim",
+    dependencies = { "catppuccin/nvim" },
     opts = {
       options = {
-        theme = "catppuccin",
+        theme = "catppuccin-macchiato",
         component_separators = { left = "|", right = "|" },
         section_separators = { left = "", right = "" },
       },

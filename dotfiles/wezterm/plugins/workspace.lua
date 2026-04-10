@@ -12,6 +12,12 @@ return function(config)
 	})
 
 	table.insert(config.keys, {
+		key = "l",
+		mods = "LEADER",
+		action = action.SwitchToWorkspace({ name = "lab" }),
+	})
+
+	table.insert(config.keys, {
 		key = "i",
 		mods = "LEADER",
 		action = action.SwitchToWorkspace({ name = "infra" }),
