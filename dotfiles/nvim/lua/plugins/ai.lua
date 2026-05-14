@@ -84,7 +84,7 @@ return {
             return require("codecompanion.adapters").extend("claude_code", {
               env = {
                 --CLAUDE_CODE_OAUTH_TOKEN = vim.env.CLAUDE_CODE_OAUTH_TOKEN,
-                CLAUDE_CODE_OAUTH_TOKEN = "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",
+                CLAUDE_CODE_OAUTH_TOKEN = "XXXXXXX",
               },
             })
           end,
