@@ -26,10 +26,26 @@ let
     sha256 = "01jspd4qq7lw0g891hilladvas8p2q67icrgv1lyaw5rapv9000i";
   };
   #fzfPreviewScript = "${vaultDir}/bin/fzf-preview.sh";
-  claudeLinks = builtins.listToAttrs (map (f: {
-    name = ".claude/${f}";
-    value = { source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/dotfiles/.claude/${f}"; };
-  }) [ "CLAUDE.md" "settings.json" "agents" "commands" "docs" "examples" "guidelines" "scripts" "teams" ]);
+  claudeLinks = builtins.listToAttrs (
+    map
+      (f: {
+        name = ".claude/${f}";
+        value = {
+          source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/dotfiles/.claude/${f}";
+        };
+      })
+      [
+        "CLAUDE.md"
+        "settings.json"
+        "agents"
+        "commands"
+        "docs"
+        "examples"
+        "guidelines"
+        "scripts"
+        "teams"
+      ]
+  );
 in
 {
   home.username = config.user.username;
@@ -109,7 +125,11 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/dotfiles/karabiner/";
       recursive = true;
     };
-  } // claudeLinks;
+    "bin/cc_status_line.sh" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/bin/cc_status_line.sh";
+    };
+  }
+  // claudeLinks;
   programs.neovim = {
     enable = true;
     viAlias = true;
@@ -201,7 +221,9 @@ in
       tools = {
         python = [ "3.13.7" ];
         node = [ "24.8.0" ];
+        bun = "latest";
         rust = "latest";
+        go = "latest";
       };
 
       settings = {
@@ -233,7 +255,9 @@ in
           source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
         fi
         export PATH="$HOME/bin:$PATH"
-        export PATH="/Users/ben/.embedder/bin:$PATH"
+        export PATH="$HOME/.embedder/bin:$PATH"
+        export PATH="$HOME/.bun/bin:$PATH"
+        export PATH=/Users/ben/.opencode/bin:$PATH
 
         export EZA_CONFIG_DIR="$HOME/.config/eza"
         export EZA_THEME="$HOME/.config/eza/theme.yml"
