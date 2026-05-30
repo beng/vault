@@ -4,6 +4,7 @@
   lib,
   mise-pkg,
   fzfTab,
+  gitFuzzy,
   ...
 }:
 let
@@ -98,6 +99,7 @@ in
     "$HOME/bin"
     "$HOME/.local/bin"
     "${vaultDir}/bin"
+    "${toString gitFuzzy}/bin"
   ];
 
   home.file = {
@@ -299,6 +301,8 @@ in
         zstyle ':completion:*' file-patterns '*(D):all-files'
         zstyle ':fzf-tab:complete:*:*' fzf-preview 'fzf-preview.sh $realpath'
         #zstyle ':fzf-tab:complete:*:*' fzf-preview '[[ -f $realpath ]] && bat --style=numbers --color=always $realpath || eza -1 --color=always $realpath'
+
+        alias gf="git fuzzy"
       '';
     };
 

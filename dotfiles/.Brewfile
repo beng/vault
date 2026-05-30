@@ -7,4 +7,4 @@ brew "fontconfig"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "coreutils"
-
+brew "gh"

@@ -15,6 +15,10 @@
       url = "github:Aloxaf/fzf-tab";
       flake = false;
     };
+    git-fuzzy = {
+      url = "github:bigH/git-fuzzy";
+      flake = false;
+    };
   };
 
   outputs =
@@ -24,6 +28,7 @@
       home-manager,
       mise,
       fzf-tab,
+      git-fuzzy,
       ...
     }:
     let
@@ -35,6 +40,7 @@
           extraSpecialArgs = {
             mise-pkg = mise.packages.${system}.mise;
             fzfTab = fzf-tab;
+            gitFuzzy = git-fuzzy;
           };
         };
     in

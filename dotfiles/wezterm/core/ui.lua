@@ -1,7 +1,7 @@
 return function(config)
 	local wezterm = require("wezterm")
 	config.window_decorations = "RESIZE"
-	config.window_background_opacity = 0.85
+	config.window_background_opacity = 0.95
 	config.macos_window_background_blur = 20
 	config.window_padding = {
 		top = 10,
