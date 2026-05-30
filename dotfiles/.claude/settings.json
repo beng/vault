@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(**/ralph-wiggum/**)",
+      "mcp__atlas__*",
+      "mcp__context7__*",
+      "mcp__plugin_context7_context7__*",
+      "mcp__pencil"
+    ],
+    "deny": [
+      "Bash(git push*)",
+      "Bash(git push)",
+      "Bash(*git push*)",
+      "Bash(*/git push*)",
+      "Bash(git branch -d*)",
+      "Bash(git branch -D*)",
+      "Bash(git reset --hard*)",
+      "Bash(git checkout .)",
+      "Bash(git checkout -f*)",
+      "Bash(git clean -f*)",
+      "Bash(git clean -d*)",
+      "Bash(git restore .)",
+      "Bash(git restore *--staged*)",
+      "Bash(git restore --worktree*)",
+      "Bash(git stash*)",
+      "Bash(sh -c*git push*)",
+      "Bash(bash -c*git push*)",
+      "Bash(env *git push*)",
+      "Bash(command *git push*)",
+      "Bash(gh pr create*)",
+      "Bash(gh repo sync*)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "/Users/ben/bin/cc_status_line.sh"
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-code-plugins": true,
+    "code-review@claude-code-plugins": true,
+    "ralph-wiggum@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "jdtls-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "dev-browser@dev-browser-marketplace": true,
+    "ralph-loop@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "codex@openai-codex": true
+  },
+  "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    }
+  },
+  "alwaysThinkingEnabled": true,
+  "editorMode": "vim",
+  "skipAutoPermissionPrompt": true,
+  "feedbackSurveyState": {
+    "lastShownTime": 1754077950626
+  }
+}

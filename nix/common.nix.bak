@@ -1,0 +1,165 @@
+{ config, pkgs, lib, mise-pkg, ... }:
+let
+  username = config.user.username;
+  vaultDir = "${config.user.paths.dev}/vault";
+  copyCmd = config.user.commands.copy;
+in {
+  home.username = username;
+  home.stateVersion = "25.11";
+  programs.home-manager.enable = true;
+   home.packages = with pkgs; [
+    ripgrep
+    fd
+    jq
+    htop
+    curl
+    wget
+    gawk
+    fzf
+    neovim
+    gnumake
+    lazygit
+    tree-sitter
+    unzip
+  ] ++ [ mise-pkg ];
+  
+
+
+  home.activation = {
+    directories = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    $DRY_RUN_CMD mkdir -p ${config.home.homeDirectory}/{bin,.config}
+    $DRY_RUN_CMD mkdir -p ${config.user.paths.dev}
+  ''; 
+
+   miseTools = lib.hm.dag.entryAfter ["directories"] ''
+    $DRY_RUN_CMD ${mise-pkg}/bin/mise install --yes
+  '';
+
+installMisePythonPlugin = lib.hm.dag.entryAfter ["miseTools"] ''
+  $DRY_RUN_CMD ${mise-pkg}/bin/mise plugin add python https://github.com/mise-lang/plugin-python || true
+'';
+setupLazyVim = lib.hm.dag.entryAfter ["installMisePythonPlugin"] ''
+  if [ ! -d "${vaultDir}/dotfiles/nvim" ]; then
+    echo "Setting up LazyVim starter..."
+    ${pkgs.git}/bin/git clone https://github.com/LazyVim/starter ${vaultDir}/dotfiles/nvim
+    rm -rf ${vaultDir}/dotfiles/nvim/.git
+    echo "LazyVim starter cloned to ${vaultDir}/dotfiles/nvim"
+  else
+    echo "LazyVim config already exists in ${vaultDir}/dotfiles/nvim"
+  fi
+'';
+};
+  
+   
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+    settings = builtins.fromTOML (builtins.readFile ../dotfiles/starship.toml);
+  };
+  
+  programs.fzf = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+    
+    defaultOptions = [
+      "--multi"
+      "--cycle" 
+      "--keep-right"
+      "-1"
+      "--height=40%"
+      "--layout=reverse"
+      "--info=inline"
+      "--preview-window right:70%"
+      "--ansi"
+    ];
+
+    defaultCommand = "fd --type f --hidden --follow --exclude .git"; 
+
+    historyWidgetOptions = [
+      "--preview 'echo {}'"
+      "--preview-window up:3:hidden:wrap"
+      "--bind 'ctrl-\\:toggle-preview'"
+      "--color header:italic"
+      "--header 'Press CTRL-Y to copy command into clipboard'"
+    ];
+    
+    fileWidgetOptions = [
+      "--preview '(bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -200'"
+    ];
+    
+    changeDirWidgetOptions = [
+      "--preview 'tree -C {} | head -200'"
+    ];
+  };
+  
+  programs.eza = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+  };
+  
+  programs.bat = {
+    enable = true;
+  };
+  
+  # Symlink your dotfiles
+#  home.file = {
+#    ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink 
+#      "${vaultDir}/dotfiles/tmux/tmux.conf";
+#    
+#    ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink 
+#      "${vaultDir}/dotfiles/git/gitconfig";
+#  };
+home.file = {
+	".config/nvim" = {
+	  source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/dotfiles/nvim";
+	  recursive = true;
+	};  
+};
+  programs.mise = {
+   package = mise-pkg;
+    enable = true;
+    globalConfig = {
+      tools = {
+        python = ["3.13.7"];
+      };
+      settings = {
+        experimental = true;
+        always_keep_download = false;
+	#python = {
+	#    compile = true;
+	#};
+      };
+    };
+  };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    #enableAutosuggestions = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+
+    initContent = ''
+    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+      source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    fi
+    export PATH="$HOME/bin:$PATH"
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300'"
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --bind='ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | ${copyCmd})'"
+    export FZF_CTRL_R_OPTS="$FZF_CTRL_R_OPTS --bind='ctrl-y:execute-silent(echo -n {2..} | ${copyCmd})+abort'"
+
+    export PATH="$HOME/.local/share/mise/shims:$PATH"
+
+    eval "$(${mise-pkg}/bin/mise activate zsh)"
+    '';
+  };
+  
+  # Pass variables to other modules
+  _module.args = {
+    inherit vaultDir;
+  };
+}
+

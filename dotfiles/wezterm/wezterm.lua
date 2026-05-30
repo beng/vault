@@ -1,0 +1,261 @@
+local wezterm = require("wezterm")
+local config = wezterm.config_builder()
+
+require("core.ui")(config)
+require("core.keybindings")(config)
+
+require("plugins.workspace")(config)
+require("plugins.bar")(config)
+-- require("plugins.pivot_panes")(config)
+
+return config
+
+-- local wezterm = require("wezterm")
+--
+-- local config = wezterm.config_builder()
+--
+-- local action = wezterm.action
+--
+-- local direction_keys = {
+-- 	h = "Left",
+-- 	j = "Down",
+-- 	k = "Up",
+-- 	l = "Right",
+-- }
+--
+-- local function split_nav(key)
+-- 	return {
+-- 		key = key,
+-- 		mods = "CTRL",
+-- 		action = wezterm.action_callback(function(win, pane)
+-- 			if pane:get_user_vars().IS_NVIM == "true" then
+-- 				-- pass the keys through to vim/nvim
+-- 				win:perform_action({
+-- 					SendKey = { key = key, mods = "CTRL" },
+-- 				}, pane)
+-- 			else
+-- 				win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
+-- 			end
+-- 		end),
+-- 	}
+-- end
+--
+-- config.window_decorations = "RESIZE"
+-- config.window_background_opacity = 0.92
+-- config.macos_window_background_blur = 20
+-- config.font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Medium" })
+-- config.audible_bell = "Disabled"
+--
+-- config.font_size = 12
+-- config.cell_width = 1
+-- config.line_height = 1.1
+-- config.color_scheme = "Catppuccin Macchiato"
+--
+-- local workspace_switcher = wezterm.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
+-- workspace_switcher.apply_to_config(config)
+--
+-- local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+-- bar.apply_to_config(config, {
+-- 	position = "top",
+-- 	max_width = 20,
+-- 	padding = {
+-- 		left = 2,
+-- 		right = 2,
+-- 		tabs = {
+-- 			left = 2,
+-- 			right = 2,
+-- 		},
+-- 	},
+-- 	separator = {
+-- 		space = 1,
+-- 		left_icon = wezterm.nerdfonts.fa_long_arrow_right,
+-- 		right_icon = wezterm.nerdfonts.fa_long_arrow_left,
+-- 		field_icon = wezterm.nerdfonts.indent_line,
+-- 	},
+-- 	modules = {
+-- 		tabs = {
+-- 			active_tab_fg = 4,
+-- 			inactive_tab_fg = 6,
+-- 			new_tab_fg = 2,
+-- 		},
+-- 		workspace = {
+-- 			enabled = true,
+-- 			icon = wezterm.nerdfonts.cod_window,
+-- 			color = 8,
+-- 		},
+-- 		leader = {
+-- 			enabled = true,
+-- 			icon = wezterm.nerdfonts.oct_rocket,
+-- 			color = 2,
+-- 		},
+-- 		zoom = {
+-- 			enabled = false,
+-- 			icon = wezterm.nerdfonts.md_fullscreen,
+-- 			color = 4,
+-- 		},
+-- 		pane = {
+-- 			enabled = false,
+-- 			icon = wezterm.nerdfonts.cod_multiple_windows,
+-- 			color = 7,
+-- 		},
+-- 		username = {
+-- 			enabled = false,
+-- 			icon = wezterm.nerdfonts.fa_user,
+-- 			color = 6,
+-- 		},
+-- 		hostname = {
+-- 			enabled = false,
+-- 			icon = wezterm.nerdfonts.cod_server,
+-- 			color = 8,
+-- 		},
+-- 		clock = {
+-- 			enabled = true,
+-- 			icon = wezterm.nerdfonts.md_calendar_clock,
+-- 			format = "%H:%M",
+-- 			color = 5,
+-- 		},
+-- 		cwd = {
+-- 			enabled = true,
+-- 			icon = wezterm.nerdfonts.oct_file_directory,
+-- 			color = 7,
+-- 		},
+-- 	},
+-- })
+--
+-- config.window_frame = {
+-- 	font_size = 10.0,
+-- }
+--
+-- config.window_padding = {
+-- 	top = 10,
+-- 	bottom = 10,
+-- 	left = 10,
+-- 	right = 10,
+-- }
+--
+-- config.leader = { key = "f", mods = "CTRL", timeout_milliseconds = 2000 }
+-- config.keys = {
+-- 	{
+-- 		key = "-",
+-- 		mods = "LEADER",
+-- 		action = action.SplitVertical({ domain = "CurrentPaneDomain" }),
+-- 	},
+--
+-- 	{
+-- 		key = "\\",
+-- 		mods = "LEADER",
+-- 		action = action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+-- 	},
+-- 	{
+-- 		key = "c",
+-- 		mods = "LEADER",
+-- 		action = action.SpawnTab("CurrentPaneDomain"),
+-- 	},
+--
+-- 	{
+-- 		key = "p",
+-- 		mods = "LEADER",
+-- 		action = action.ActivateTabRelative(-1),
+-- 	},
+-- 	{
+-- 		key = "n",
+-- 		mods = "LEADER",
+-- 		action = action.ActivateTabRelative(1),
+-- 	},
+-- 	{
+-- 		key = "m",
+-- 		mods = "LEADER",
+-- 		action = action.TogglePaneZoomState,
+-- 	},
+-- 	{
+-- 		key = "_",
+-- 		mods = "LEADER",
+-- 		action = action.AdjustPaneSize({ "Down", 10 }),
+-- 	},
+-- 	{
+-- 		key = "+",
+-- 		mods = "LEADER",
+-- 		action = action.AdjustPaneSize({ "Up", 10 }),
+-- 	},
+-- 	{
+-- 		key = ">",
+-- 		mods = "LEADER",
+-- 		action = action.AdjustPaneSize({ "Right", 10 }),
+-- 	},
+-- 	{
+-- 		key = "<",
+-- 		mods = "LEADER",
+-- 		action = action.AdjustPaneSize({ "Left", 10 }),
+-- 	},
+-- 	{
+-- 		key = "h",
+-- 		mods = "CTRL",
+-- 		action = action.ActivatePaneDirection("Left"),
+-- 	},
+-- 	{
+-- 		key = "s",
+-- 		mods = "LEADER",
+-- 		action = workspace_switcher.switch_workspace(),
+-- 	},
+-- 	{
+-- 		key = "S",
+-- 		mods = "LEADER",
+-- 		action = workspace_switcher.switch_to_prev_workspace(),
+-- 	},
+-- 	{
+-- 		key = "$",
+-- 		mods = "LEADER",
+-- 		action = wezterm.action_callback(function(window, pane)
+-- 			local current_workspace = window:active_workspace()
+--
+-- 			window:perform_action(
+-- 				action.PromptInputLine({
+-- 					description = string.format("Rename '%s' to:", current_workspace),
+-- 					action = wezterm.action_callback(function(win, p, line)
+-- 						if line and line ~= "" then
+-- 							wezterm.mux.rename_workspace(current_workspace, line)
+-- 						end
+-- 					end),
+-- 				}),
+-- 				pane
+-- 			)
+-- 		end),
+-- 	},
+-- 	{
+-- 		key = "w",
+-- 		mods = "LEADER",
+-- 		action = action.PromptInputLine({
+-- 			description = "Enter workspace name:",
+-- 			action = wezterm.action_callback(function(window, pane, line)
+-- 				if line and line ~= "" then
+-- 					window:perform_action(
+-- 						action.SwitchToWorkspace({
+-- 							name = line,
+-- 						}),
+-- 						pane
+-- 					)
+-- 				end
+-- 			end),
+-- 		}),
+-- 	},
+-- 	{
+-- 		key = "[",
+-- 		mods = "LEADER",
+-- 		action = wezterm.action.ActivateCopyMode,
+-- 	},
+-- }
+--
+-- table.insert(config.keys, split_nav("h"))
+-- table.insert(config.keys, split_nav("j"))
+-- table.insert(config.keys, split_nav("k"))
+-- table.insert(config.keys, split_nav("l"))
+--
+-- for i = 1, 9 do
+-- 	table.insert(config.keys, {
+-- 		key = tostring(i),
+-- 		mods = "LEADER",
+-- 		action = action.ActivateTab(i - 1),
+-- 	})
+-- end
+--
+-- return config
