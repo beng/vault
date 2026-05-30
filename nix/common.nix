@@ -8,7 +8,7 @@
   ...
 }:
 let
-  vaultDir = "${config.user.paths.dev}/beng-vault";
+  vaultDir = "${config.user.paths.dev}/vault";
   copyCmd = toString config.user.commands.copy;
   runCmd =
     cmd:

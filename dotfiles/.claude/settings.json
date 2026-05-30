@@ -37,7 +37,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "/Users/ben/bin/cc_status_line.sh"
+    "command": "$HOME/bin/cc_status_line.sh"
   },
   "enabledPlugins": {
     "frontend-design@claude-code-plugins": true,
