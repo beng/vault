@@ -44,6 +44,7 @@ let
         "examples"
         "guidelines"
         "scripts"
+        "skills"
         "teams"
       ]
   );
@@ -72,6 +73,20 @@ in
       imagemagickBig
       uv
       ast-grep
+    ]
+    # Go dev tools consumed by Neovim (LazyVim lang.go extra). Declared here so
+    # they are reproducible across laptops and survive `go` toolchain bumps,
+    # rather than relying on stray `go install` outputs in the versioned mise
+    # toolchain dir. Neovim is configured (mason filter in lua/plugins/mason.lua)
+    # to use these PATH copies instead of mason-installed duplicates.
+    ++ [
+      gopls
+      gofumpt
+      gotools # provides goimports
+      delve # provides dlv (Go debugger for nvim-dap-go)
+      gomodifytags
+      impl
+      golangci-lint
     ]
     ++ [ mise-pkg ];
   home.activation = {

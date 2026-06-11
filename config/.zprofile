@@ -10,13 +10,15 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
 export GOPATH="${HOME}/go"
-export GOROOT="/usr/local/opt/go/libexec"
+# GOROOT intentionally unset: mise-managed Go derives its own GOROOT from the
+# install location. A hard-coded GOROOT (e.g. the old Homebrew path) overrides
+# that and breaks `go` after the toolchain moves.
 
 export LDFLAGS="-L/usr/local/opt/openblas/lib"
 export CPPFLAGS="-I/usr/local/opt/openblas/include"
 export LIBRARY_PATH="/opt/homebrew/opt/gcc/lib/gcc/current:/opt/homebrew/opt/libgccjit/lib/gcc/current:/opt/homebrew/opt/gcc/lib/gcc/current/gcc/aarch64-apple-darwin23/13"
 
-export PATH="$PATH:$HOME/bin:$HOME/.emacs.d/bin:$HOME/.config/emacs/bin:$HOME/.cargo/bin:/Applications/kitty.app/Contents/MacOS:$GOPATH/bin:$GOROOT/bin"
+export PATH="$PATH:$HOME/bin:$HOME/.emacs.d/bin:$HOME/.config/emacs/bin:$HOME/.cargo/bin:/Applications/kitty.app/Contents/MacOS:$GOPATH/bin"
 
 # export PATH=/usr/local/bin:$PATH
 # export PATH="$HOME/.emacs.d/bin:$PATH"

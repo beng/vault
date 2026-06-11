@@ -11,6 +11,12 @@ return {
       -- merge with any existing pyright config from the python extra
       local existing = opts.servers.pyright or {}
 
+      -- use the gopls from the mise-managed Go toolchain on PATH rather than
+      -- letting the lang.go extra install a duplicate copy via mason
+      opts.servers.gopls = vim.tbl_deep_extend("force", opts.servers.gopls or {}, {
+        mason = false,
+      })
+
       opts.servers.pyright = vim.tbl_deep_extend("force", existing, {
         settings = {
           python = {

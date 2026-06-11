@@ -35,6 +35,7 @@
       "Bash(gh repo sync*)"
     ]
   },
+  "model": "claude-fable-5[1m]",
   "statusLine": {
     "type": "command",
     "command": "$HOME/bin/cc_status_line.sh"
@@ -57,7 +58,14 @@
     "skill-creator@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
-    "codex@openai-codex": true
+    "codex@openai-codex": true,
+    "remember@claude-plugins-official": true,
+    "atomic-agents@claude-plugins-official": true,
+    "qodo-skills@claude-plugins-official": true,
+    "pr-review-toolkit@claude-code-plugins": true,
+    "ralph-wiggum@claude-code-plugins": true,
+    "security-guidance@claude-code-plugins": true,
+    "gopls-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -68,9 +76,13 @@
     }
   },
   "alwaysThinkingEnabled": true,
+  "skipWorkflowUsageWarning": true,
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754077950626
-  }
+  },
+  "effortLevel": "xhigh",
+  "cleanupPeriodDays": 36500
 }
+
