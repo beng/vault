@@ -44,9 +44,30 @@ let
         "examples"
         "guidelines"
         "scripts"
+        "skills"
         "teams"
       ]
   );
+  codexLinks = builtins.listToAttrs (
+    map
+      (link: {
+        name = ".codex/${link.name}";
+        value = {
+          source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/dotfiles/.claude/${link.source}";
+        };
+      })
+      [
+        {
+          name = "AGENTS.md";
+          source = "CLAUDE.md";
+        }
+        {
+          name = "guidelines";
+          source = "guidelines";
+        }
+      ]
+  );
+
 in
 {
   home.username = config.user.username;
@@ -72,6 +93,20 @@ in
       imagemagickBig
       uv
       ast-grep
+    ]
+    # Go dev tools consumed by Neovim (LazyVim lang.go extra). Declared here so
+    # they are reproducible across laptops and survive `go` toolchain bumps,
+    # rather than relying on stray `go install` outputs in the versioned mise
+    # toolchain dir. Neovim is configured (mason filter in lua/plugins/mason.lua)
+    # to use these PATH copies instead of mason-installed duplicates.
+    ++ [
+      gopls
+      gofumpt
+      gotools # provides goimports
+      delve # provides dlv (Go debugger for nvim-dap-go)
+      gomodifytags
+      impl
+      golangci-lint
     ]
     ++ [ mise-pkg ];
   home.activation = {
@@ -131,7 +166,8 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${vaultDir}/bin/cc_status_line.sh";
     };
   }
-  // claudeLinks;
+  // claudeLinks
+  // codexLinks;
   programs.neovim = {
     enable = true;
     viAlias = true;
