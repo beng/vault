@@ -12,6 +12,7 @@ Push and PR creation are the user's actions, not yours. Your job is to prepare a
 1. Ground in actual state (never from memory):
    - `git status` - surface uncommitted changes; report them, do not commit unless told.
    - Base branch: `gh repo view --json defaultBranchRef -q .defaultBranchRef.name`; if the work forked from somewhere else, say so and ask.
+   - What the base pulls in: `git rev-list --count <base>..HEAD`. A branch stacked on another unmerged branch (forked from X, but you are targeting Y) drags every X-not-on-Y commit into the PR. If the count exceeds the commits you actually made, name the extras (`git log --oneline <base>..<fork-branch>`) and confirm the user wants them in this PR - a branch off a feature branch, PR'd to trunk, ships the whole feature.
    - `git log --oneline <base>..HEAD` and `git diff --stat <base>...HEAD`
 2. Draft the title (imperative, one line) and body from those commits and diffs, not from what you remember doing. If `.github/PULL_REQUEST_TEMPLATE.md` exists, follow it.
 3. Print ONE copy-paste block in the format below. The quoted heredoc for the body is the point: it prevents the shell-quoting bugs that inline `--body` strings cause.
@@ -45,6 +46,7 @@ EOF
 | Mistake | Fix |
 |---------|-----|
 | Assuming base is `main` | Read the default branch or the fork point; state which you used |
+| Not noticing a stacked branch | `git rev-list --count <base>..HEAD`; if it exceeds your own commits, the PR drags an upstream branch's commits - name them and confirm |
 | Inline `--body "long string"` | Always the quoted heredoc block |
 | Drafting the body from memory of the session | Draft from `git log` + `git diff --stat` output you just ran |
 | Committing leftover changes to "tidy up" | Report uncommitted files and let the user decide |

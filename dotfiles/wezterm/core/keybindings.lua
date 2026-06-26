@@ -85,6 +85,25 @@ return function(config)
 				timeout_milliseconds = 1000,
 			}),
 		},
+		-- LEADER+z: toggle "reading mode" padding for wide single-pane layouts
+		{
+			key = "z",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, pane)
+				local overrides = window:get_config_overrides() or {}
+				if overrides.window_padding then
+					overrides.window_padding = nil -- back to the 10px default from ui.lua
+				else
+					overrides.window_padding = {
+						left = "25%",
+						right = "14%",
+						top = 10,
+						bottom = 10,
+					}
+				end
+				window:set_config_overrides(overrides)
+			end),
+		},
 	}
 
 	-- Add vim-aware navigation
